@@ -1,4 +1,4 @@
-# Freddy SAT
+# Freddy Servicio Técnico
 
 Trilingual marketing site for an appliance and air-conditioning repair service
 (SAT) in Barcelona. Astro, static output, deployed to Cloudflare Workers.
@@ -13,10 +13,16 @@ npm test               # Playwright behaviour checks (needs a preview server)
 
 ## Before this goes live
 
-`src/config/business.ts` ships with **invented placeholder data** — the phone
-numbers are the reserved `93 000 00 00` / `600 000 000` patterns so they cannot
-dial a real person, and the NIF and address are blank. `npm run deploy` refuses
-to run until they are replaced:
+Phone number and opening hours are **real**, taken from the Google Business
+Profile (`BUSINESS.google.profileUrl`) — 692 47 18 55, open 08:00–22:00 seven
+days a week. Keep them in step with the profile: it already points at
+freddysat.es, and Google distrusts a listing whose details disagree with the
+site it links to.
+
+Still outstanding in `src/config/business.ts`: the registered name, NIF and
+fiscal address (all three are legally required on the aviso legal), and the
+call-out fee and guarantee period, which are assumptions. `npm run deploy`
+refuses to run until they are filled in:
 
 ```sh
 npm run check:placeholders
@@ -102,7 +108,7 @@ order:
    records). This cannot be scripted with Orlo's API token — it returns
    `10405 Method not allowed for this authentication scheme`, so either use the
    dashboard or a token carrying Workers Scripts: Edit.
-5. **Replace the placeholder business data** (`npm run check:placeholders`) and
+5. **Fill in the remaining legal details** (`npm run check:placeholders`) and
    redeploy. Do this *before* step 4 if the domain is going to be findable.
 
 Zone settings already applied: `ssl=strict`, `always_use_https=on`,

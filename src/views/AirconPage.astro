@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import airconPhoto from "../assets/freddy-aircon.jpg";
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import CallPanel from "../components/CallPanel.astro";
@@ -10,6 +12,12 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const d = t(locale);
 const aircon = d.catalogue.find((s) => s.id === "aire")!;
+
+const photoAlt = {
+  es: "Freddy conectando el manómetro a un equipo de aire acondicionado abierto",
+  ca: "en Freddy connectant el manòmetre a un equip d'aire condicionat obert",
+  en: "Freddy connecting gauges to an opened air conditioning unit",
+}[locale];
 ---
 
 <Base
@@ -18,32 +26,44 @@ const aircon = d.catalogue.find((s) => s.id === "aire")!;
   title={d.meta.airconTitle}
   description={fill(d.meta.airconDescription)}
 >
-  <PageHeader eyebrow={d.aircon.eyebrow} title={d.aircon.title} lead={d.aircon.lead} />
+  <PageHeader label={d.aircon.label} title={d.aircon.title} lead={d.aircon.lead} />
 
-  <section class="border-b border-steel-soft py-16 md:py-24">
+  <section class="border-b border-paper-edge py-16 md:py-24">
     <div class="wrap grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
       <div>
         <h2 class="text-2xl md:text-3xl">{d.aircon.doTitle}</h2>
-        <ul class="mt-6 border-t border-steel-soft">
+        <ul class="mt-6 border-t border-paper-edge">
           {
             d.aircon.do.map((item) => (
-              <li class="flex items-start gap-3.5 border-b border-steel-soft py-4">
-                <span class="mt-1.5 size-2 shrink-0 bg-ice" aria-hidden="true" />
+              <li class="flex items-start gap-3.5 border-b border-paper-edge py-4">
+                <span class="mt-1.5 size-2 shrink-0 bg-orange" aria-hidden="true" />
                 <span class="text-base leading-relaxed">{item}</span>
               </li>
             ))
           }
         </ul>
 
-        <div class="mt-10 border-l-2 border-ice bg-ice-wash px-6 py-5">
+        <div class="mt-10 border-l-2 border-orange bg-orange-wash px-6 py-5">
           <h3 class="font-display text-lg font-bold leading-tight">{d.aircon.seasonTitle}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-graphite-70">{d.aircon.seasonBody}</p>
+          <p class="mt-2 text-sm leading-relaxed text-ink-70">{d.aircon.seasonBody}</p>
         </div>
       </div>
 
       <div>
-        <p class="eyebrow">{d.services.common}</p>
-        <ul class="mt-4 grid gap-px bg-steel-soft">
+        <figure>
+          <Image
+            src={airconPhoto}
+            alt={photoAlt}
+            widths={[420, 700]}
+            sizes="(min-width: 1024px) 38vw, 100vw"
+            class="w-full object-cover"
+            loading="lazy"
+          />
+          <div class="rule-orange" aria-hidden="true"></div>
+        </figure>
+
+        <p class="label mt-8">{d.services.common}</p>
+        <ul class="mt-4 grid gap-px bg-paper-edge">
           {
             aircon.faults.map((fault) => (
               <li class="bg-white px-5 py-4 font-display text-base font-bold">{fault}</li>

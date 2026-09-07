@@ -1,4 +1,11 @@
 import { chromium } from "playwright";
+import { readFileSync } from "node:fs";
+
+// Read the number from the config rather than hardcoding it, so correcting the
+// business details never leaves a green test asserting the old one.
+const WA = readFileSync(new URL("../src/config/business.ts", import.meta.url), "utf8")
+  .match(/whatsapp:\s*"(\d+)"/)[1];
+
 const BASE = "http://localhost:4322";
 const browser = await chromium.launch();
 let fail = 0;
@@ -50,7 +57,7 @@ const check = (name, ok, detail = "") => {
 
   const raw = await page.evaluate(() => window.__opened);
   const msg = decodeURIComponent(new URL(raw).searchParams.get("text") ?? "");
-  check("submit opens wa.me", raw.startsWith("https://wa.me/34600000000?"), raw.slice(0, 48));
+  check("submit opens wa.me", raw.startsWith(`https://wa.me/${WA}?`), raw.slice(0, 48));
   check("message carries the appliance", msg.includes("Fridge"));
   check("message carries the fault", msg.includes("Not cooling since yesterday"));
   check("message is labelled in English", msg.includes("Appliance:") && msg.includes("What's wrong:"));

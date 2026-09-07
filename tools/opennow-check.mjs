@@ -1,0 +1,10 @@
+import { chromium } from "playwright";
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto("http://localhost:4322/", { waitUntil: "networkidle" });
+await p.waitForTimeout(400);
+const texts = await p.$$eval("[data-open-now] [data-status]", (els) => els.map((e) => e.textContent.trim()));
+console.log(`${texts.length} panel(s) on the home page:`);
+texts.forEach((t, i) => console.log(`  ${i + 1}. ${t}`));
+console.log(new Set(texts).size === 1 ? "\nall panels agree" : "\nMISMATCH — panels disagree");
+await b.close();

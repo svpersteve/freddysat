@@ -34,13 +34,14 @@ const ca: Dict = {
   },
 
   hero: {
-    eyebrow: "SAT a Barcelona",
+    label: "SAT a Barcelona",
     title: "Què se li ha espatllat?",
     lead:
       "Reparem electrodomèstics i aire condicionat a domicili a Barcelona. Digui'ns què falla i li diem avui mateix si té arranjament i quant costa.",
     pickSymptom: "Triï el símptoma",
     orCall: "o truqui directament",
     availableNow: "Obert ara",
+    everyDayHours: "Tots els dies, de {open} a {close}",
     closedNow: "Tancat ara",
     opensAt: "Obrim a les",
     todayUntil: "Avui fins a les",
@@ -66,7 +67,7 @@ const ca: Dict = {
   },
 
   services: {
-    eyebrow: "Què reparem",
+    label: "Què reparem",
     title: "Del que escalfa al que refreda",
     lead:
       "Un mateix ofici als dos extrems: resistències, termòstats i sondes d'una banda; compressors, gas i circuits de fred de l'altra.",
@@ -130,7 +131,7 @@ const ca: Dict = {
   ],
 
   trust: {
-    eyebrow: "Sense sorpreses",
+    label: "Sense sorpreses",
     title: "El que costa, abans de començar",
     lead:
       "El pressupost es tanca a casa seva, amb l'aparell obert i el preu dit en veu alta. Si no el convenç, no es fa i no es toca res més.",
@@ -155,7 +156,7 @@ const ca: Dict = {
   },
 
   process: {
-    eyebrow: "Com funciona",
+    label: "Com funciona",
     title: "Quatre passos i ja està",
     steps: [
       { title: "Ens truca", body: "Expliqui el símptoma i la marca. Moltes avaries s'identifiquen per telèfon." },
@@ -166,14 +167,14 @@ const ca: Dict = {
   },
 
   areas: {
-    eyebrow: "On anem",
+    label: "On anem",
     title: "Barcelona i àrea metropolitana",
     lead: "Treballem a tota la ciutat i als municipis del costat. Si el seu carrer no és a la llista, pregunti igualment.",
     notListed: "No hi veu la seva zona? Truqui'ns i l'hi confirmem.",
   },
 
   faq: {
-    eyebrow: "Dubtes freqüents",
+    label: "Dubtes freqüents",
     title: "El que ens pregunten per telèfon",
     items: [
       {
@@ -197,14 +198,14 @@ const ca: Dict = {
         a: "Sí, amb targeta, Bizum o efectiu, i sempre amb factura.",
       },
       {
-        q: "Atenen fora d'horari?",
-        a: "L'horari de visita és el publicat. Fora d'aquest horari pot deixar un WhatsApp i li contestem a primera hora del següent dia laborable.",
+        q: "Treballen els caps de setmana?",
+        a: "Sí. Atenem els set dies de la setmana, de {open} a {close}, festius inclosos. Una nevera no tria el dissabte per espatllar-se.",
       },
     ],
   },
 
   aircon: {
-    eyebrow: "Especialitat",
+    label: "Especialitat",
     title: "Aire condicionat, sense l'estafa del gas",
     lead:
       "A l'agost mig Barcelona truca pel mateix, i enmig d'aquestes trucades s'hi cola molta recàrrega de gas innecessària. Un split que refredava bé i ha deixat de fer-ho gairebé mai necessita gas: necessita que algú busqui per què l'ha perdut.",
@@ -223,7 +224,7 @@ const ca: Dict = {
   },
 
   contact: {
-    eyebrow: "Contacte",
+    label: "Contacte",
     title: "Expliqui'ns què falla",
     lead: "El més ràpid és trucar. Si prefereix escriure, el formulari obre WhatsApp amb el missatge ja redactat.",
     phoneLabel: "Telèfon",
@@ -247,9 +248,7 @@ const ca: Dict = {
       required: "Ompli l'aparell i l'avaria per continuar.",
       note: "No s'envia res des d'aquesta pàgina: s'obre WhatsApp i vostè decideix si l'envia.",
     },
-    weekdays: "De dilluns a divendres",
-    saturday: "Dissabte",
-    sunday: "Diumenge",
+    everyDay: "Tots els dies",
     closed: "Tancat",
   },
 
@@ -259,6 +258,7 @@ const ca: Dict = {
     company: "L'empresa",
     legalNote: "Servei tècnic independent. No som servei oficial de cap marca; les marques citades pertanyen als seus titulars.",
     rights: "Tots els drets reservats.",
+    googleProfile: "Veure a Google Maps",
     legal: "Avís legal",
     privacy: "Privacitat",
   },

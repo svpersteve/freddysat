@@ -11,12 +11,11 @@ import { readFileSync } from "node:fs";
 const src = readFileSync(new URL("../src/config/business.ts", import.meta.url), "utf8");
 
 const checks = [
-  { label: "landline",       bad: /\+34930000000/,        hint: "BUSINESS.phone" },
-  { label: "mobile",         bad: /\+34600000000/,        hint: "BUSINESS.mobile" },
-  { label: "whatsapp",       bad: /"34600000000"/,        hint: "BUSINESS.whatsapp" },
-  { label: "tax id (NIF)",   bad: /taxId:\s*""/,          hint: "required on the aviso legal page by law" },
-  { label: "street address", bad: /Carrer d'exemple/,     hint: "BUSINESS.address.street" },
-  { label: "postal code",    bad: /postalCode:\s*"08000"/,hint: "BUSINESS.address.postalCode" },
+  { label: "legal name",   bad: /legalName:\s*""/,    hint: "registered name — autónomo or S.L." },
+  { label: "tax id (NIF)", bad: /taxId:\s*""/,        hint: "required on the aviso legal page by law" },
+  { label: "fiscal address", bad: /legalAddress:\s*""/, hint: "required on the aviso legal page by law" },
+  { label: "call-out fee", bad: /calloutFee:\s*35,\s*\/\/ TODO/, hint: "confirm the desplazamiento with Freddy" },
+  { label: "guarantee",    bad: /warrantyMonths:\s*6,\s*\/\/ TODO/, hint: "confirm months on labour and parts" },
 ];
 
 const outstanding = checks.filter((c) => c.bad.test(src));
@@ -29,5 +28,5 @@ if (outstanding.length === 0) {
 
 console.error(`\n${outstanding.length} placeholder(s) still in src/config/business.ts:\n`);
 for (const c of outstanding) console.error(`  · ${c.label.padEnd(15)} — ${c.hint}`);
-console.error("\nReplace these before pointing freddysat.es at the site.\n");
+console.error("\nPhone and opening hours came off the Google Business Profile and are real.\nThese are what is left.\n");
 process.exit(1);

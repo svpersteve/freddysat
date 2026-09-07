@@ -66,6 +66,8 @@ export function fill(text: string, extra: Record<string, string | number> = {}):
     warranty: BUSINESS.pricing.warrantyMonths,
     hours: BUSINESS.responseHours,
     phone: BUSINESS.phone.display,
+    open: BUSINESS.hours.open,
+    close: BUSINESS.hours.close,
     city: BUSINESS.address.city,
     ...extra,
   };

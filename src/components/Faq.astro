@@ -18,23 +18,23 @@ const faqSchema = {
 };
 ---
 
-<section class="border-b border-steel-soft bg-white py-16 md:py-24">
+<section class="border-b border-paper-edge bg-white py-16 md:py-24">
   <div class="wrap grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
     <div>
-      <p class="eyebrow">{d.faq.eyebrow}</p>
+      <p class="label">{d.faq.label}</p>
       <h2 class="mt-3 text-[clamp(1.875rem,4.5vw,2.75rem)]">{d.faq.title}</h2>
     </div>
 
     {/* Native details/summary: keyboard-operable and expanded by find-in-page
         without a line of JavaScript. */}
-    <div class="border-t border-steel-soft">
+    <div class="border-t border-paper-edge">
       {
         d.faq.items.map((item) => (
-          <details class="group border-b border-steel-soft">
-            <summary class="flex cursor-pointer list-none items-start justify-between gap-6 py-5 font-display text-base font-bold leading-snug transition-colors duration-200 hover:text-ember [&::-webkit-details-marker]:hidden">
+          <details class="group border-b border-paper-edge">
+            <summary class="flex cursor-pointer list-none items-start justify-between gap-6 py-5 font-display text-base font-bold leading-snug underline-offset-4 transition-all duration-200 hover:underline [&::-webkit-details-marker]:hidden">
               {fill(item.q)}
               <span
-                class="mt-0.5 shrink-0 text-graphite-45 transition-transform duration-200 group-open:rotate-45"
+                class="mt-0.5 shrink-0 text-ink-45 transition-transform duration-200 group-open:rotate-45"
                 aria-hidden="true"
               >
                 <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -42,7 +42,7 @@ const faqSchema = {
                 </svg>
               </span>
             </summary>
-            <p class="max-w-2xl pb-6 text-sm leading-relaxed text-graphite-70">{fill(item.a)}</p>
+            <p class="max-w-2xl pb-6 text-sm leading-relaxed text-ink-70">{fill(item.a)}</p>
           </details>
         ))
       }

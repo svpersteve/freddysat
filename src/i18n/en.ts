@@ -36,13 +36,14 @@ const en: Dict = {
   },
 
   hero: {
-    eyebrow: "Repairs in Barcelona",
+    label: "Repairs in Barcelona",
     title: "What's broken?",
     lead:
       "We repair home appliances and air conditioning at your address in Barcelona. Tell us what it's doing and we'll tell you today whether it's worth fixing and what it costs.",
     pickSymptom: "Pick the symptom",
     orCall: "or just call",
     availableNow: "Open now",
+    everyDayHours: "Every day, {open} to {close}",
     closedNow: "Closed now",
     opensAt: "Opens at",
     todayUntil: "Today until",
@@ -68,7 +69,7 @@ const en: Dict = {
   },
 
   services: {
-    eyebrow: "What we fix",
+    label: "What we fix",
     title: "From the things that heat to the things that cool",
     lead:
       "One trade at both ends: elements, thermostats and probes on one side; compressors, refrigerant and cooling circuits on the other.",
@@ -132,7 +133,7 @@ const en: Dict = {
   ],
 
   trust: {
-    eyebrow: "No surprises",
+    label: "No surprises",
     title: "The price, before any work starts",
     lead:
       "The quote is agreed at your address, with the appliance open and the number said out loud. If you don't like it, nothing else gets touched.",
@@ -157,7 +158,7 @@ const en: Dict = {
   },
 
   process: {
-    eyebrow: "How it works",
+    label: "How it works",
     title: "Four steps, that's it",
     steps: [
       { title: "You call", body: "Describe the symptom and the brand. A lot of faults are identifiable over the phone." },
@@ -168,14 +169,14 @@ const en: Dict = {
   },
 
   areas: {
-    eyebrow: "Where we go",
+    label: "Where we go",
     title: "Barcelona and the metropolitan area",
     lead: "We cover the whole city and the towns next to it. If your street isn't on the list, ask anyway.",
     notListed: "Don't see your area? Call and we'll confirm.",
   },
 
   faq: {
-    eyebrow: "Common questions",
+    label: "Common questions",
     title: "What people ask us on the phone",
     items: [
       {
@@ -199,6 +200,10 @@ const en: Dict = {
         a: "In a Spanish rental, ordinary wear and tear on appliances that came with the flat is normally the landlord's, and damage from misuse is the tenant's. Send them the invoice and the diagnosis; we write both clearly enough to settle it.",
       },
       {
+        q: "Do you work weekends?",
+        a: "Yes. Seven days a week, {open} to {close}, public holidays included. A fridge doesn't pick Saturday to break down.",
+      },
+      {
         q: "Can I pay by card?",
         a: "Yes — card, Bizum or cash, always with an invoice.",
       },
@@ -206,7 +211,7 @@ const en: Dict = {
   },
 
   aircon: {
-    eyebrow: "Speciality",
+    label: "Speciality",
     title: "Air conditioning, without the regassing racket",
     lead:
       "Every August half of Barcelona rings about the same thing, and a lot of unnecessary regassing gets sold in among those calls. A split that used to cool well and has stopped almost never needs gas — it needs someone to find out where the gas went.",
@@ -225,7 +230,7 @@ const en: Dict = {
   },
 
   contact: {
-    eyebrow: "Contact",
+    label: "Contact",
     title: "Tell us what it's doing",
     lead: "Calling is fastest. If you'd rather write, the form opens WhatsApp with the message already drafted.",
     phoneLabel: "Landline",
@@ -249,9 +254,7 @@ const en: Dict = {
       required: "Fill in the appliance and the fault to continue.",
       note: "Nothing is sent from this page: it opens WhatsApp and you decide whether to send.",
     },
-    weekdays: "Monday to Friday",
-    saturday: "Saturday",
-    sunday: "Sunday",
+    everyDay: "Every day",
     closed: "Closed",
   },
 
@@ -261,6 +264,7 @@ const en: Dict = {
     company: "Company",
     legalNote: "Independent repair service. We are not an authorised service centre for any manufacturer; brand names belong to their owners.",
     rights: "All rights reserved.",
+    googleProfile: "View on Google Maps",
     legal: "Legal notice",
     privacy: "Privacy",
   },

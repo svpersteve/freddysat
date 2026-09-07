@@ -1,8 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <defs><clipPath id="c"><rect width="32" height="32" rx="5"/></clipPath></defs>
-  <g clip-path="url(#c)">
-    <rect width="32" height="32" fill="#0d6e7a"/>
-    <path d="M32 0 32 32 0 32Z" fill="#d8452a"/>
-    <path d="M32 0 0 32" stroke="#f5f7f7" stroke-width="2.5"/>
-  </g>
+  <rect width="32" height="32" fill="#1a1a1a"/>
+  <text x="16" y="14.5" font-family="Archivo Black, Archivo, Helvetica, sans-serif" font-size="13.5"
+        font-weight="900" fill="#ffffff" text-anchor="middle">F</text>
+  <rect x="6" y="18.5" width="20" height="3.4" fill="#e8590c"/>
 </svg>

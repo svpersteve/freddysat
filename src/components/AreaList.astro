@@ -7,25 +7,25 @@ const { locale } = Astro.props;
 const d = t(locale);
 ---
 
-<section class="border-b border-steel-soft py-16 md:py-24">
+<section class="border-b border-paper-edge py-16 md:py-24">
   <div class="wrap">
     <div class="max-w-2xl">
-      <p class="eyebrow">{d.areas.eyebrow}</p>
+      <p class="label">{d.areas.label}</p>
       <h2 class="mt-3 text-[clamp(1.875rem,4.5vw,2.75rem)]">{d.areas.title}</h2>
-      <p class="mt-4 text-lg leading-relaxed text-graphite-70">{d.areas.lead}</p>
+      <p class="mt-4 text-lg leading-relaxed text-ink-70">{d.areas.lead}</p>
     </div>
 
     <ul class="mt-10 flex flex-wrap gap-2">
       {
         AREAS.map((area) => (
-          <li class="border border-steel bg-white px-3.5 py-2 font-mono text-xs text-graphite-70">{area}</li>
+          <li class="border border-steel bg-white px-3.5 py-2 text-sm text-ink-70">{area}</li>
         ))
       }
     </ul>
 
-    <p class="mt-6 flex items-center gap-2 text-sm text-graphite-70">
+    <p class="mt-6 flex items-center gap-2 text-sm text-ink-70">
       {d.areas.notListed}
-      <a href={`tel:${BUSINESS.phone.tel}`} class="font-mono text-ember underline-offset-4 hover:underline" data-call-link>
+      <a href={`tel:${BUSINESS.phone.tel}`} class="font-bold text-ink tnum underline-offset-4 hover:underline" data-call-link>
         {BUSINESS.phone.display}
       </a>
     </p>

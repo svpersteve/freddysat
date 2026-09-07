@@ -1,5 +1,5 @@
 ---
-import Mark from "./Mark.astro";
+import Wordmark from "./Wordmark.astro";
 import { AREAS, BUSINESS } from "../config/business";
 import { pathFor, t, type Locale, type PageKey } from "../i18n";
 
@@ -16,17 +16,14 @@ const serviceLinks: { key: PageKey; label: string }[] = [
 ];
 ---
 
-<footer class="bg-graphite text-white/70">
+<footer class="bg-ink text-white/70">
   <div class="wrap grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
     <div class="lg:col-span-2 lg:max-w-sm">
-      <div class="flex items-center gap-2.5">
-        <Mark class="size-6" />
-        <span class="font-display text-base font-bold text-white">Freddy<span class="text-white/40 font-normal">·</span>SAT</span>
-      </div>
+      <Wordmark variant="reversed" class="text-[2rem]" />
       <p class="mt-4 text-sm leading-relaxed">{d.footer.blurb}</p>
 
-      <div class="mt-6 space-y-1.5 font-mono text-sm">
-        <a href={`tel:${BUSINESS.phone.tel}`} class="block text-white transition-colors hover:text-ember-bright" data-call-link>
+      <div class="mt-6 space-y-1.5 text-sm tnum">
+        <a href={`tel:${BUSINESS.phone.tel}`} class="block text-white underline-offset-4 transition-opacity hover:underline" data-call-link>
           {BUSINESS.phone.display}
         </a>
         <a href={`mailto:${BUSINESS.email}`} class="block transition-colors hover:text-white">{BUSINESS.email}</a>
@@ -34,7 +31,7 @@ const serviceLinks: { key: PageKey; label: string }[] = [
     </div>
 
     <nav aria-labelledby="footer-services">
-      <h2 id="footer-services" class="eyebrow text-white/40">{d.footer.services}</h2>
+      <h2 id="footer-services" class="label text-white/40">{d.footer.services}</h2>
       <ul class="mt-4 space-y-2.5 text-sm">
         {
           serviceLinks.map((l) => (
@@ -49,23 +46,25 @@ const serviceLinks: { key: PageKey; label: string }[] = [
     </nav>
 
     <div>
-      <h2 class="eyebrow text-white/40">{d.contact.hoursLabel}</h2>
-      <dl class="mt-4 space-y-2 font-mono text-xs">
-        <div class="flex justify-between gap-3">
-          <dt>{d.contact.weekdays}</dt>
-          <dd class="text-white">{BUSINESS.hours.weekdays.open}–{BUSINESS.hours.weekdays.close}</dd>
-        </div>
-        <div class="flex justify-between gap-3">
-          <dt>{d.contact.saturday}</dt>
-          <dd class="text-white">{BUSINESS.hours.saturday.open}–{BUSINESS.hours.saturday.close}</dd>
-        </div>
-        <div class="flex justify-between gap-3">
-          <dt>{d.contact.sunday}</dt>
-          <dd>{d.contact.closed}</dd>
-        </div>
-      </dl>
+      <h2 class="label text-white/40">{d.contact.hoursLabel}</h2>
+      <p class="mt-4 flex items-baseline justify-between gap-3 text-sm">
+        <span>{d.contact.everyDay}</span>
+        <span class="font-bold text-white tnum">{BUSINESS.hours.open}–{BUSINESS.hours.close}</span>
+      </p>
 
-      <h2 class="eyebrow mt-7 text-white/40">{d.contact.areaLabel}</h2>
+      <a
+        href={BUSINESS.google.profileUrl}
+        target="_blank"
+        rel="noopener"
+        class="mt-5 inline-flex items-center gap-2 border border-white/30 px-3.5 py-2 text-xs transition-colors duration-200 hover:border-white hover:bg-white/10"
+      >
+        <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/>
+        </svg>
+        {d.footer.googleProfile}
+      </a>
+
+      <h2 class="label mt-7 text-white/40">{d.contact.areaLabel}</h2>
       <p class="mt-3 text-xs leading-relaxed">{AREAS.slice(0, 6).join(" · ")} …</p>
     </div>
   </div>
@@ -76,7 +75,7 @@ const serviceLinks: { key: PageKey; label: string }[] = [
       <div class="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2">
         <a href={pathFor(locale, "legal")} class="transition-colors duration-200 hover:text-white">{d.footer.legal}</a>
         <a href={pathFor(locale, "privacy")} class="transition-colors duration-200 hover:text-white">{d.footer.privacy}</a>
-        <span class="font-mono text-white/35">© {year} {BUSINESS.name}</span>
+        <span class="text-white/40">© {year} {BUSINESS.name}</span>
       </div>
     </div>
   </div>

@@ -1,0 +1,40 @@
+---
+/**
+ * The lockup rebuilt in live type, for use at header size.
+ *
+ * The supplied SVG has its type outlined, which is right for vinyl and print
+ * but works against us here: the brand guide notes the subline turns into a
+ * grey smear below roughly 300px wide, and a site header is a third of that.
+ * Set in the real Archivo Black and Oswald — the exact pair the guide names —
+ * it stays crisp at any size, scales with the layout and is selectable text.
+ *
+ * The SVG is still what ships everywhere the artwork must be exact and cannot
+ * rely on a webfont: favicon, apple-touch icon, structured data, the footer at
+ * full size, and anything handed to a printer.
+ *
+ * Construction follows the original: wordmark, the orange rule spanning its
+ * full width, subline beneath. The rule is the piece holding it together, so
+ * it is never omitted.
+ */
+interface Props { variant?: "primary" | "reversed"; class?: string }
+const { variant = "primary", class: className = "" } = Astro.props;
+const dark = variant === "reversed";
+---
+
+<span class={`inline-flex flex-col ${className}`} aria-hidden="true">
+  <span
+    class:list={["font-display leading-[0.82] tracking-[-0.02em]", dark ? "text-white" : "text-ink"]}
+    style="font-size:1em"
+  >
+    FREDDY
+  </span>
+  {/* Measured off the artwork: the rule sits at 88% of the wordmark's width,
+      centred — not edge to edge, despite what the guide's prose implies. */}
+  <span class="mt-[0.14em] h-[0.115em] w-[88%] self-center bg-orange"></span>
+  <span
+    class:list={["mt-[0.1em] w-full", dark ? "text-white" : "text-ink"]}
+    style="font-family:var(--font-label);font-weight:600;font-size:0.47em;letter-spacing:0.12em;line-height:1"
+  >
+    SERVICIO TÉCNICO
+  </span>
+</span>

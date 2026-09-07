@@ -1,16 +1,12 @@
 ---
 // Self-hosted, not Google's CDN. A stylesheet link to fonts.googleapis.com
 // sends every visitor's IP to a third country on first paint, which for an EU
-// site is a data transfer the privacy policy would have to declare. Bundling
-// the woff2 files removes the transfer, the extra DNS lookup and the TLS
-// handshake in one go.
-import "@fontsource-variable/bricolage-grotesque/wght.css";
-import "@fontsource/ibm-plex-sans/latin-400.css";
-import "@fontsource/ibm-plex-sans/latin-500.css";
-import "@fontsource/ibm-plex-sans/latin-600.css";
-import "@fontsource/ibm-plex-mono/latin-400.css";
-import "@fontsource/ibm-plex-mono/latin-500.css";
+// site is a data transfer the privacy policy would have to declare.
+import "@fontsource/archivo-black/latin-400.css";
+import "@fontsource-variable/archivo/wght.css";
+import "@fontsource-variable/oswald/wght.css";
 import "../styles/global.css";
+
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import CallBar from "../components/CallBar.astro";
@@ -33,9 +29,14 @@ const d = t(locale);
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const alternates = alternatesFor(page);
 
-// One LocalBusiness node for the whole site, emitted on every page so any
-// landing page can be the one Google reads. HVACBusiness is the closest
-// schema.org type that covers both halves of the trade.
+// One LocalBusiness node, emitted on every page so any landing page can be the
+// one Google reads. HVACBusiness is the closest schema.org type covering both
+// halves of the trade.
+//
+// No PostalAddress: this is a service-area business and the Google profile
+// carries no street address either. Publishing an invented one here would
+// contradict the listing that already points at this domain, which is the
+// fastest way to have both distrusted.
 const schema = {
   "@context": "https://schema.org",
   "@type": "HVACBusiness",
@@ -44,29 +45,18 @@ const schema = {
   description: fill(d.footer.blurb),
   url: SITE_URL,
   telephone: BUSINESS.phone.tel,
-  email: BUSINESS.email,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: BUSINESS.address.street,
-    postalCode: BUSINESS.address.postalCode,
-    addressLocality: BUSINESS.address.city,
-    addressRegion: BUSINESS.address.region,
-    addressCountry: BUSINESS.address.country,
-  },
-  geo: { "@type": "GeoCoordinates", latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
+  image: `${SITE_URL}/brand/logo-square.svg`,
+  logo: `${SITE_URL}/brand/logo-primary.svg`,
+  sameAs: [BUSINESS.google.profileUrl],
+  address: { "@type": "PostalAddress", addressLocality: BUSINESS.address.city, addressRegion: BUSINESS.address.region, addressCountry: BUSINESS.address.country },
   areaServed: { "@type": "City", name: BUSINESS.address.city },
+  geo: { "@type": "GeoCoordinates", latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: BUSINESS.hours.weekdays.open,
-      closes: BUSINESS.hours.weekdays.close,
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Saturday",
-      opens: BUSINESS.hours.saturday.open,
-      closes: BUSINESS.hours.saturday.close,
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      opens: BUSINESS.hours.open,
+      closes: BUSINESS.hours.close,
     },
   ],
   makesOffer: d.catalogue.map((s) => ({
@@ -93,11 +83,12 @@ const schema = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={d.htmlLang.replace("-", "_")} />
-    <meta name="twitter:card" content="summary" />
-    <meta name="theme-color" content="#161c22" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#1a1a1a" />
     <meta name="robots" content={robots} />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/brand/logo-avatar-250.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
@@ -106,7 +97,7 @@ const schema = {
   <body class="min-h-screen flex flex-col">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-graphite focus:px-4 focus:py-2 focus:text-white focus:font-mono focus:text-sm"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-white focus:text-sm"
       >{d.nav.skip}</a
     >
 

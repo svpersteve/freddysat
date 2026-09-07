@@ -10,10 +10,11 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const d = t(locale);
 
+// The email row only renders once a mailbox exists; the domain is not
+// registered yet, so listing an address would advertise a dead inbox.
 const rows = [
   { label: d.contact.phoneLabel, value: BUSINESS.phone.display, href: `tel:${BUSINESS.phone.tel}` },
-  { label: d.contact.mobileLabel, value: BUSINESS.mobile.display, href: `tel:${BUSINESS.mobile.tel}` },
-  { label: d.contact.emailLabel, value: BUSINESS.email, href: `mailto:${BUSINESS.email}` },
+  ...(BUSINESS.email ? [{ label: d.contact.emailLabel, value: BUSINESS.email, href: `mailto:${BUSINESS.email}` }] : []),
 ];
 ---
 
@@ -23,22 +24,22 @@ const rows = [
   title={d.meta.contactTitle}
   description={fill(d.meta.contactDescription)}
 >
-  <PageHeader eyebrow={d.contact.eyebrow} title={d.contact.title} lead={d.contact.lead} />
+  <PageHeader label={d.contact.label} title={d.contact.title} lead={d.contact.lead} />
 
   <section class="py-14 md:py-20">
     <div class="wrap grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
       <div>
         <CallPanel locale={locale} />
 
-        <dl class="mt-8 border-t border-steel-soft">
+        <dl class="mt-8 border-t border-paper-edge">
           {
             rows.map((row) => (
-              <div class="flex items-baseline justify-between gap-4 border-b border-steel-soft py-4">
-                <dt class="eyebrow">{row.label}</dt>
+              <div class="flex items-baseline justify-between gap-4 border-b border-paper-edge py-4">
+                <dt class="label">{row.label}</dt>
                 <dd>
                   <a
                     href={row.href}
-                    class="font-mono text-base text-graphite transition-colors duration-200 hover:text-ember"
+                    class="text-base font-bold text-ink tnum underline-offset-4 transition-all duration-200 hover:underline"
                     data-call-link={row.href.startsWith("tel:") ? true : undefined}
                   >
                     {row.value}
@@ -47,16 +48,15 @@ const rows = [
               </div>
             ))
           }
-          <div class="flex items-baseline justify-between gap-4 border-b border-steel-soft py-4">
-            <dt class="eyebrow">{d.contact.hoursLabel}</dt>
-            <dd class="text-right font-mono text-sm">
-              <span class="block">{d.contact.weekdays} {BUSINESS.hours.weekdays.open}–{BUSINESS.hours.weekdays.close}</span>
-              <span class="block text-graphite-45">{d.contact.saturday} {BUSINESS.hours.saturday.open}–{BUSINESS.hours.saturday.close}</span>
+          <div class="flex items-baseline justify-between gap-4 border-b border-paper-edge py-4">
+            <dt class="label">{d.contact.hoursLabel}</dt>
+            <dd class="text-right text-sm">
+              <span class="block font-bold tnum">{d.contact.everyDay} · {BUSINESS.hours.open}–{BUSINESS.hours.close}</span>
             </dd>
           </div>
-          <div class="border-b border-steel-soft py-4">
-            <dt class="eyebrow">{d.contact.areaLabel}</dt>
-            <dd class="mt-2 text-sm leading-relaxed text-graphite-70">{AREAS.join(" · ")}</dd>
+          <div class="border-b border-paper-edge py-4">
+            <dt class="label">{d.contact.areaLabel}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-ink-70">{AREAS.join(" · ")}</dd>
           </div>
         </dl>
       </div>

@@ -18,10 +18,10 @@ const waText = encodeURIComponent(
   appliance holding a phone, so the call target follows them down the page —
   but only where the header's own number has been dropped for width.
 */}
-<div class="fixed inset-x-0 bottom-0 z-40 flex border-t border-graphite/15 bg-white/95 backdrop-blur md:hidden print:hidden">
+<div class="fixed inset-x-0 bottom-0 z-40 flex border-t border-ink/15 bg-white/95 backdrop-blur md:hidden print:hidden">
   <a
     href={`tel:${BUSINESS.phone.tel}`}
-    class="flex flex-[1.6] items-center justify-center gap-2.5 bg-ember px-4 py-4 font-mono text-base font-medium text-white"
+    class="flex flex-[1.6] items-center justify-center gap-2.5 bg-orange px-4 py-4 text-base font-bold text-white"
     data-call-link
   >
     <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -33,7 +33,7 @@ const waText = encodeURIComponent(
     href={`https://wa.me/${BUSINESS.whatsapp}?text=${waText}`}
     target="_blank"
     rel="noopener"
-    class="flex flex-1 items-center justify-center gap-2 px-4 py-4 text-sm text-graphite"
+    class="flex flex-1 items-center justify-center gap-2 px-4 py-4 text-sm text-ink"
     aria-label={d.hero.whatsapp}
   >
     <svg class="size-5 text-live" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

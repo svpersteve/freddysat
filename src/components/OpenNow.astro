@@ -1,77 +1,69 @@
 ---
 import { BUSINESS } from "../config/business";
-import { t, type Locale } from "../i18n";
+import { fill, t, type Locale } from "../i18n";
 
-interface Props { locale: Locale }
-const { locale } = Astro.props;
+interface Props { locale: Locale; class?: string }
+const { locale, class: className = "" } = Astro.props;
 const d = t(locale);
-const h = BUSINESS.hours;
 ---
 
 {/*
   Open/closed cannot be decided at build time — a prerendered "Open now" is
   wrong for most of the day it is cached. So the honest, always-true opening
-  hours render server-side, and the script below upgrades them to a live status
-  in the visitor's own reading of Europe/Madrid. No JS, no lie.
+  hours render server-side, and the script upgrades them to a live status in
+  Barcelona's clock. No JS, no lie.
 */}
-<div class="flex items-center gap-2.5 font-mono text-xs" data-open-now>
-  <span class="size-2 rounded-full bg-graphite-45 shrink-0" data-dot aria-hidden="true"></span>
-  <span class="text-white/70" data-status>
-    {d.contact.weekdays} {h.weekdays.open}–{h.weekdays.close}
-  </span>
+<div class={`flex items-center gap-2.5 text-sm ${className}`} data-open-now>
+  <span class="size-2 shrink-0 rounded-full bg-white/40" data-dot aria-hidden="true"></span>
+  <span class="tnum" data-status>{fill(d.hero.everyDayHours)}</span>
 </div>
 
 <script
   is:inline
   define:vars={{
-    hours: h,
+    hours: BUSINESS.hours,
     labels: {
       open: d.hero.availableNow,
       closed: d.hero.closedNow,
       until: d.hero.todayUntil,
       opensAt: d.hero.opensAt,
-      weekdays: d.contact.weekdays,
     },
   }}
 >
   (() => {
-    const root = document.querySelector("[data-open-now]");
-    if (!root) return;
+    // A page can carry more than one call panel — the home page has one in the
+    // hero and another at the foot — and this inline script is emitted once per
+    // instance. querySelector would leave every panel after the first showing
+    // the static hours while the first is updated twice, so every instance
+    // updates every panel; the work is idempotent.
+    const roots = document.querySelectorAll("[data-open-now]");
+    if (!roots.length) return;
 
     // The business is in Barcelona; the visitor may not be. Formatting "now"
-    // into Europe/Madrid parts means a customer reading this from London is
-    // told whether the *workshop* is open, not whether their own clock says so.
+    // into Europe/Madrid means someone reading this from London is told
+    // whether the workshop is open, not whether their own clock says so.
     const parts = new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Europe/Madrid",
-      hour: "2-digit",
-      minute: "2-digit",
-      weekday: "short",
-      hour12: false,
+      timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", hour12: false,
     }).formatToParts(new Date());
+    const get = (type) => parts.find((p) => p.type === type)?.value ?? "0";
 
-    const get = (type) => parts.find((p) => p.type === type)?.value ?? "";
-    const day = get("weekday");
     const minutes = Number(get("hour")) * 60 + Number(get("minute"));
     const toMinutes = (hhmm) => Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3, 5));
+    // Same hours seven days a week, so the weekday never enters the decision.
+    const isOpen = minutes >= toMinutes(hours.open) && minutes < toMinutes(hours.close);
 
-    const today = day === "Sat" ? hours.saturday : day === "Sun" ? hours.sunday : hours.weekdays;
-    const isOpen = !!today && minutes >= toMinutes(today.open) && minutes < toMinutes(today.close);
+    for (const root of roots) {
+      const dot = root.querySelector("[data-dot]");
+      const status = root.querySelector("[data-status]");
+      if (!dot || !status) continue;
 
-    const dot = root.querySelector("[data-dot]");
-    const status = root.querySelector("[data-status]");
-    if (!dot || !status) return;
-
-    if (isOpen) {
-      dot.style.background = "var(--color-live)";
-      dot.style.boxShadow = "0 0 0 3px color-mix(in srgb, var(--color-live) 25%, transparent)";
-      status.textContent = `${labels.open} · ${labels.until} ${today.close}`;
-      status.className = "text-white";
-    } else {
-      dot.style.background = "var(--color-ember)";
-      status.textContent = today
-        ? `${labels.closed} · ${labels.opensAt} ${today.open}`
-        : `${labels.closed} · ${labels.weekdays} ${hours.weekdays.open}–${hours.weekdays.close}`;
-      status.className = "text-white/70";
+      dot.style.background = isOpen ? "var(--color-live)" : "var(--color-orange)";
+      dot.style.boxShadow = isOpen
+        ? "0 0 0 3px color-mix(in srgb, var(--color-live) 30%, transparent)"
+        : "none";
+      status.textContent = isOpen
+        ? `${labels.open} · ${labels.until} ${hours.close}`
+        : `${labels.closed} · ${labels.opensAt} ${hours.open}`;
     }
   })();
 </script>

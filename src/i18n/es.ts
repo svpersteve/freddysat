@@ -37,7 +37,7 @@ const es = {
   },
 
   hero: {
-    eyebrow: "SAT en Barcelona",
+    label: "SAT en Barcelona",
     // The headline is the customer's own question, not a slogan about us.
     title: "¿Qué se le ha estropeado?",
     lead:
@@ -45,6 +45,7 @@ const es = {
     pickSymptom: "Elija el síntoma",
     orCall: "o llame directamente",
     availableNow: "Abierto ahora",
+    everyDayHours: "Todos los días, de {open} a {close}",
     closedNow: "Cerrado ahora",
     opensAt: "Abrimos a las",
     todayUntil: "Hoy hasta las",
@@ -72,7 +73,7 @@ const es = {
   },
 
   services: {
-    eyebrow: "Qué reparamos",
+    label: "Qué reparamos",
     title: "De lo que calienta a lo que enfría",
     lead:
       "Un mismo oficio en los dos extremos: resistencias, termostatos y sondas por un lado; compresores, gas y circuitos de frío por el otro.",
@@ -137,7 +138,7 @@ const es = {
   ],
 
   trust: {
-    eyebrow: "Sin sorpresas",
+    label: "Sin sorpresas",
     title: "Lo que cuesta, antes de empezar",
     lead:
       "El presupuesto se cierra en su casa, con el aparato abierto y el precio dicho en voz alta. Si no le convence, no se hace y no se toca nada más.",
@@ -162,7 +163,7 @@ const es = {
   },
 
   process: {
-    eyebrow: "Cómo funciona",
+    label: "Cómo funciona",
     title: "Cuatro pasos y ya está",
     // A genuine sequence, so it is numbered. Nothing else on the site is.
     steps: [
@@ -174,14 +175,14 @@ const es = {
   },
 
   areas: {
-    eyebrow: "Dónde vamos",
+    label: "Dónde vamos",
     title: "Barcelona y área metropolitana",
     lead: "Trabajamos en toda la ciudad y en los municipios de al lado. Si su calle no está en la lista, pregunte igualmente.",
     notListed: "¿No ve su zona? Llámenos y se lo confirmamos.",
   },
 
   faq: {
-    eyebrow: "Dudas frecuentes",
+    label: "Dudas frecuentes",
     title: "Lo que nos preguntan por teléfono",
     items: [
       {
@@ -205,14 +206,14 @@ const es = {
         a: "Sí, con tarjeta, Bizum o efectivo, y siempre con factura.",
       },
       {
-        q: "¿Atienden fuera de horario?",
-        a: "El horario de visita es el publicado. Fuera de él puede dejar un WhatsApp y le contestamos a primera hora del siguiente día laborable.",
+        q: "¿Trabajan fines de semana?",
+        a: "Sí. Atendemos los siete días de la semana, de {open} a {close}, festivos incluidos. Una nevera no elige el sábado para estropearse.",
       },
     ],
   },
 
   aircon: {
-    eyebrow: "Especialidad",
+    label: "Especialidad",
     title: "Aire acondicionado, sin el timo del gas",
     lead:
       "En agosto medio Barcelona llama por lo mismo, y en medio de esas llamadas se cuela mucha recarga de gas innecesaria. Un split que enfriaba bien y ha dejado de hacerlo casi nunca necesita gas: necesita que alguien busque por qué lo ha perdido.",
@@ -231,7 +232,7 @@ const es = {
   },
 
   contact: {
-    eyebrow: "Contacto",
+    label: "Contacto",
     title: "Cuéntenos qué falla",
     lead: "Lo más rápido es llamar. Si prefiere escribir, el formulario abre WhatsApp con el mensaje ya redactado.",
     phoneLabel: "Teléfono",
@@ -255,9 +256,7 @@ const es = {
       required: "Rellene el aparato y la avería para continuar.",
       note: "No se envía nada desde esta página: se abre WhatsApp y usted decide si lo manda.",
     },
-    weekdays: "Lunes a viernes",
-    saturday: "Sábado",
-    sunday: "Domingo",
+    everyDay: "Todos los días",
     closed: "Cerrado",
   },
 
@@ -267,6 +266,7 @@ const es = {
     company: "La empresa",
     legalNote: "Servicio técnico independiente. No somos servicio oficial de ninguna marca; las marcas citadas pertenecen a sus titulares.",
     rights: "Todos los derechos reservados.",
+    googleProfile: "Ver en Google Maps",
     legal: "Aviso legal",
     privacy: "Privacidad",
   },

@@ -6,64 +6,75 @@
  * call bar, the contact page, the WhatsApp deep links and the LocalBusiness
  * structured data at once.
  *
- * >>> PLACEHOLDERS <<<
- * Anything marked TODO below is invented scaffolding, not real data. The phone
- * numbers use the reserved 93 000 00 00 / 600 000 000 patterns precisely so
- * they cannot dial a real person by accident, and the site must not go public
- * until they are replaced. `npm run check:placeholders` lists what is left.
+ * Phone, hours, name and category are taken from the live Google Business
+ * Profile (see GOOGLE.profileUrl) and must stay in step with it — Google
+ * penalises a listing whose NAP details disagree with the site it points at,
+ * and the profile already points at freddysat.es.
+ *
+ * >>> STILL PLACEHOLDER <<<
+ * Anything marked TODO is unverified. `npm run check:placeholders` lists what
+ * is outstanding and `npm run deploy` refuses to run while any remains.
  */
 
 export const SITE_URL = "https://freddysat.es";
 
 export const BUSINESS = {
-  name: "Freddy SAT",
-  legalName: "Freddy SAT", // TODO real registered name (S.L. / autónomo)
-  taxId: "", // TODO NIF/CIF -- required on the aviso legal page by Spanish law
+  name: "Freddy Servicio Técnico",
+  shortName: "Freddy",
+  legalName: "", // TODO registered name (autónomo or S.L.)
+  taxId: "", // TODO NIF/CIF — required on the aviso legal page by Spanish law
   tagline: {
     es: "Reparación de electrodomésticos y aire acondicionado en Barcelona",
     ca: "Reparació d'electrodomèstics i aire condicionat a Barcelona",
     en: "Appliance and air conditioning repair in Barcelona",
   },
 
-  // tel: is the machine-readable form; display is what a human reads.
-  phone: { tel: "+34930000000", display: "93 000 00 00" }, // TODO real landline
-  mobile: { tel: "+34600000000", display: "600 000 000" }, // TODO real mobile
-  whatsapp: "34600000000", // TODO digits only, country code, no +
-  email: "hola@freddysat.es", // TODO confirm the mailbox exists
+  /** From the Google Business Profile. One mobile, which is also the WhatsApp. */
+  phone: { tel: "+34692471855", display: "692 47 18 55" },
+  whatsapp: "34692471855",
+  email: "", // TODO no mailbox exists yet; contact rows hide while this is blank
 
-  address: {
-    street: "Carrer d'exemple, 00", // TODO
-    postalCode: "08000", // TODO
-    city: "Barcelona",
-    region: "Catalunya",
-    country: "ES",
-  },
+  /**
+   * A service-area business: Freddy drives to the customer, so there is no
+   * shop to publish. Google's profile carries no street address either, and
+   * inventing one would contradict the listing. Only the city is stated.
+   */
+  address: { city: "Barcelona", region: "Catalunya", country: "ES" },
+  geo: { lat: 41.3874, lng: 2.1686 },
 
-  // Used for the LocalBusiness service radius, not a shop location.
-  geo: { lat: 41.3874, lng: 2.1686 }, // Barcelona centre -- fine as a service-area centroid
+  /**
+   * The fiscal address, which is a different thing from a shop.
+   *
+   * LSSI art. 10 requires the titular's domicilio on the aviso legal even when
+   * there is no premises to visit, so this appears on the legal pages only and
+   * never in the LocalBusiness markup or the contact page.
+   */
+  legalAddress: "", // TODO domicilio fiscal — required on the aviso legal page
 
-  hours: {
-    weekdays: { open: "08:00", close: "20:00" },
-    saturday: { open: "09:00", close: "14:00" },
-    sunday: null, // closed
-  },
+  /**
+   * 08:00–22:00, every day including Sunday, per the profile. Long hours and
+   * weekend cover are the strongest thing this business has to say against a
+   * franchise call centre, so the copy leads with it rather than burying it.
+   */
+  hours: { open: "08:00", close: "22:00", everyDay: true },
 
-  /** The honesty layer. These are the numbers customers are most suspicious about. */
   pricing: {
     calloutFee: 35, // TODO confirm desplazamiento
-    calloutWaived: true, // fee dropped when the repair goes ahead
+    calloutWaived: true,
     currency: "EUR",
     warrantyMonths: 6, // TODO confirm guarantee on labour and parts
   },
 
   responseHours: 24, // TODO typical time to attend, in hours
 
-  social: {
-    // TODO add real profiles, or leave empty and the links will not render
-    instagram: "",
-    facebook: "",
-    google: "", // Google Business Profile -- worth having for local search
+  google: {
+    /** Canonical CID link — survives the profile being renamed or moved. */
+    profileUrl: "https://maps.google.com/?cid=14599212122246135349",
+    reviewUrl: "https://search.google.com/local/writereview?placeid=ChIJiVb5RVXNOqkRNb4OQxLSmso",
+    category: "Servicio de reparación",
   },
+
+  social: { instagram: "", facebook: "" }, // TODO none on the profile yet
 } as const;
 
 /** Neighbourhoods and nearby towns actually covered. Drives the areas page. */

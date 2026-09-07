@@ -1,52 +1,50 @@
 @import "tailwindcss";
 
 /*
-  Freddy SAT — design tokens.
+  Freddy Servicio Técnico — design tokens.
 
-  The palette runs on one axis, because the trade does: everything this business
-  touches is either making something cold (fridge, freezer, A/C) or making it hot
-  (oven, hob, dryer, water heater). Ember and ice are therefore not decoration —
-  they classify the service, and the services page is sorted along them.
+  Taken from the brand guide in claude_context/README.md, and its two hard
+  rules are enforced here rather than left to memory:
 
-  Ember is reserved for the call action and the hot half of the axis. Two embers
-  competing for attention in one viewport is a bug, not a style.
+    1. Orange is the ONLY accent.
+    2. Orange is NEVER used for type.
+
+  Orange is a *structural rule* colour — in the logo it is the bar spanning the
+  full width of the wordmark, the one element holding the lockup together. The
+  site extends that idea: orange appears as rules and as the fill behind white
+  type on the call actions, and nowhere as a text colour. If you find yourself
+  reaching for text-orange, use ink and give the emphasis to weight or a rule.
 */
 @theme {
-  /* Ground: appliance enamel. Cooler and greyer than paper — this is porcelain,
-     not a cream editorial background. */
-  --color-porcelain: #f5f7f7;
-  --color-porcelain-deep: #e8ecec;
-  --color-white: #ffffff;
+  /* Paper. The brand's ground is plain white; the tinted greys below are for
+     alternating bands, not for a warm "designed" background. */
+  --color-paper: #ffffff;
+  --color-paper-shade: #f4f4f3;
+  --color-paper-edge: #e6e6e4;
 
-  /* Ink: appliance trim. Never pure black — reads harsh against enamel. */
-  --color-graphite: #161c22;
-  --color-graphite-70: #4a545e;
-  --color-graphite-45: #78838e;
+  /* Ink. Not pure black — the guide is explicit that #1A1A1A prints and
+     screens better, and the logo is cut in it. */
+  --color-ink: #1a1a1a;
+  --color-ink-70: #55555a;
+  --color-ink-45: #8a8a8e;
+  --color-steel: #c9c9c7;
 
-  /* Cold pole — refrigerant, the cool cycle, A/C. */
-  --color-ice: #0d6e7a;
-  --color-ice-bright: #14939f;
-  --color-ice-wash: #e4f1f2;
+  /* The one accent. RAL 2004 / Pantone 165 C for anything physical. */
+  --color-orange: #e8590c;
+  --color-orange-bright: #f97316;
+  --color-orange-wash: #fdf0e8;
 
-  /* Hot pole — the element, the ember. The call-to-action colour. */
-  --color-ember: #d8452a;
-  --color-ember-bright: #f0603c;
-  --color-ember-wash: #fdeae5;
-
-  /* Steel — rules, borders, the edge of a panel. */
-  --color-steel: #c3ccce;
-  --color-steel-soft: #dde3e4;
-
-  /* Status. One green, used only for "we are open right now". */
+  /* Status. Kept outside the brand palette on purpose: it says "open now",
+     which is information, not identity, and it appears as a 8px dot only. */
   --color-live: #17915f;
 
-  /* Fontsource names the variable cut "… Variable"; the static family name
-     alone silently falls through to the sans-serif fallback. */
-  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", "Helvetica Neue", sans-serif;
-  --font-body: "IBM Plex Sans", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
-
-  --radius-panel: 4px;
+  /* FREDDY is cut in Archivo Black and SERVICIO TÉCNICO in letterspaced
+     Oswald; the guide asks for the same pair on the site. Archivo Black is a
+     display weight only — body copy runs in Archivo proper, the same
+     superfamily, so the page stays one voice. */
+  --font-display: "Archivo Black", "Archivo Variable", Archivo, sans-serif;
+  --font-body: "Archivo Variable", Archivo, system-ui, sans-serif;
+  --font-label: "Oswald Variable", Oswald, "Archivo Variable", sans-serif;
 }
 
 @layer base {
@@ -56,57 +54,71 @@
   }
 
   body {
-    background: var(--color-porcelain);
-    color: var(--color-graphite);
+    background: var(--color-paper);
+    color: var(--color-ink);
     font-family: var(--font-body);
     font-size: 1rem;
-    line-height: 1.6;
-    font-feature-settings: "kern", "liga";
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4 {
+  /* Archivo Black carries its own weight — asking for 700 on top synthesises a
+     bolder face in some browsers and smears the counters at display size. */
+  h1, h2, h3 {
     font-family: var(--font-display);
-    font-weight: 700;
-    line-height: 1.04;
-    letter-spacing: -0.025em;
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 
-  /* Keyboard focus must stay visible everywhere. Ember on porcelain clears
-     WCAG AA against both the light ground and the graphite panels. */
+  h4 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
   :focus-visible {
-    outline: 3px solid var(--color-ember);
+    outline: 3px solid var(--color-orange);
     outline-offset: 2px;
-    border-radius: 2px;
   }
 
   ::selection {
-    background: var(--color-ember);
+    background: var(--color-orange);
     color: #fff;
   }
 }
 
 @layer components {
-  /* The measure. Long-form legal copy needs a narrower one than marketing. */
   .wrap { width: 100%; max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
   @media (min-width: 768px) { .wrap { padding-inline: 2rem; } }
   .wrap-narrow { max-width: 44rem; }
 
-  /* Eyebrow: mono, tracked out, small. Marks a section's *category*, and is only
-     used where the category is genuinely load-bearing. */
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
+  /* The subline treatment from the lockup: Oswald, uppercase, letterspaced
+     120/1000 as the guide specifies. Used for section eyebrows and labels. */
+  .label {
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-graphite-45);
+    line-height: 1.3;
+    color: var(--color-ink-70);
   }
+
+  /* The brand's structural device: the orange bar that spans the wordmark.
+     Reused as the site's section rule — full width of whatever it heads. */
+  .rule-orange {
+    height: 5px;
+    background: var(--color-orange);
+    border: 0;
+  }
+
+  /* Numerals that must line up in a column — hours, phone, prices. Archivo
+     ships tabular figures, so no second family is needed for this. */
+  .tnum { font-variant-numeric: tabular-nums; }
 }
 
-/* Motion is opt-out, and everything below is a fade or a short translate —
-   nothing here reflows or moves more than 12px. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

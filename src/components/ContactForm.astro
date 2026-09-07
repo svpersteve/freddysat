@@ -7,8 +7,8 @@ const { locale } = Astro.props;
 const d = t(locale);
 const f = d.contact.form;
 
-const field = "w-full border border-steel bg-white px-3.5 py-2.5 text-sm text-graphite placeholder:text-graphite-45/70 transition-colors duration-200 focus:border-ice focus:outline-none focus-visible:outline-none";
-const label = "block font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-graphite-45";
+const field = "w-full border border-steel bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-45/70 transition-colors duration-200 focus:border-orange focus:outline-none focus-visible:outline-none";
+const label = "block label";
 
 // The symptom chips on the home page arrive here as ?s=<id>. Passing the
 // dictionary's own labels down means the prefilled sentence is in the same
@@ -16,7 +16,7 @@ const label = "block font-mono text-[0.6875rem] uppercase tracking-[0.12em] text
 const symptomLabels = Object.fromEntries(d.symptoms.map((s) => [s.id, s.label]));
 ---
 
-<form class="grid gap-5 border border-steel bg-porcelain p-6 sm:p-8" data-wa-form novalidate>
+<form class="grid gap-5 border border-steel bg-paper-shade p-6 sm:p-8" data-wa-form novalidate>
   <h2 class="font-display text-xl font-bold leading-tight">{f.title}</h2>
 
   <div class="grid gap-5 sm:grid-cols-2">
@@ -29,7 +29,7 @@ const symptomLabels = Object.fromEntries(d.symptoms.map((s) => [s.id, s.label]))
       <input class={`mt-1.5 ${field}`} id="wa-area" name="area" type="text" placeholder={f.areaPlaceholder} />
     </div>
     <div>
-      <label class={label} for="wa-appliance">{f.appliance} <span class="text-ember" aria-hidden="true">*</span></label>
+      <label class={label} for="wa-appliance">{f.appliance} <span class="ml-1 inline-block size-1.5 bg-orange align-middle" aria-hidden="true"></span></label>
       <input class={`mt-1.5 ${field}`} id="wa-appliance" name="appliance" type="text" required placeholder={f.appliancePlaceholder} />
     </div>
     <div>
@@ -39,23 +39,23 @@ const symptomLabels = Object.fromEntries(d.symptoms.map((s) => [s.id, s.label]))
   </div>
 
   <div>
-    <label class={label} for="wa-problem">{f.problem} <span class="text-ember" aria-hidden="true">*</span></label>
+    <label class={label} for="wa-problem">{f.problem} <span class="ml-1 inline-block size-1.5 bg-orange align-middle" aria-hidden="true"></span></label>
     <textarea class={`mt-1.5 ${field} min-h-28 resize-y`} id="wa-problem" name="problem" required placeholder={f.problemPlaceholder}></textarea>
   </div>
 
-  <p class="hidden font-mono text-xs text-ember" role="alert" data-wa-error>{f.required}</p>
+  <p class="hidden border-l-[5px] border-orange bg-orange-wash px-3 py-2 text-sm text-ink" role="alert" data-wa-error>{f.required}</p>
 
   <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
     <button
       type="submit"
-      class="inline-flex shrink-0 items-center justify-center gap-2.5 bg-graphite px-6 py-3.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-ember"
+      class="inline-flex shrink-0 items-center justify-center gap-2.5 bg-ink px-6 py-3.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-orange"
     >
       <svg class="size-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.86 9.86 0 0 0 4.74 1.2h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.23-8.23a8.2 8.2 0 0 1 8.22 8.24c0 4.54-3.69 8.22-8.22 8.22Z"/>
       </svg>
       {f.submit}
     </button>
-    <p class="font-mono text-[0.6875rem] leading-relaxed text-graphite-45">{f.note}</p>
+    <p class="text-xs leading-relaxed text-ink-45">{f.note}</p>
   </div>
 </form>
 

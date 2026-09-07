@@ -1,5 +1,5 @@
 ---
-import Mark from "./Mark.astro";
+import Wordmark from "./Wordmark.astro";
 import LangSwitch from "./LangSwitch.astro";
 import { BUSINESS } from "../config/business";
 import { pathFor, t, type Locale, type PageKey } from "../i18n";
@@ -16,13 +16,16 @@ const links: { key: PageKey; label: string }[] = [
 ];
 ---
 
-<header class="sticky top-0 z-40 bg-graphite text-white">
-  <div class="wrap flex h-16 items-center justify-between gap-4">
-    <a href={pathFor(locale, "home")} class="flex items-center gap-2.5 shrink-0" aria-label={BUSINESS.name}>
-      <Mark class="size-7" />
-      <span class="font-display text-lg font-bold tracking-tight leading-none">
-        Freddy<span class="text-graphite-45 font-normal">·</span>SAT
-      </span>
+{/*
+  The header is the logo's own construction scaled up: wordmark, then the
+  orange rule spanning the full width beneath it. In the lockup that bar is
+  what holds the thing together, so the site's masthead is built the same way
+  rather than inventing a separate header treatment.
+*/}
+<header class="sticky top-0 z-40 bg-paper">
+  <div class="wrap flex h-[4.5rem] items-center justify-between gap-4">
+    <a href={pathFor(locale, "home")} class="shrink-0" aria-label={BUSINESS.name}>
+      <Wordmark class="text-[1.6rem] sm:text-[1.85rem]" />
     </a>
 
     <nav class="hidden lg:flex items-center gap-1" aria-label={d.nav.menu}>
@@ -32,12 +35,11 @@ const links: { key: PageKey; label: string }[] = [
             href={pathFor(locale, l.key)}
             aria-current={l.key === page ? "page" : undefined}
             class:list={[
-              "px-3 py-2 text-sm transition-colors duration-200",
-              l.key === page ? "text-white" : "text-white/65 hover:text-white",
+              "px-3 py-2 text-sm font-medium transition-colors duration-200",
+              l.key === page ? "text-ink" : "text-ink-70 hover:text-ink",
             ]}
           >
             {l.label}
-            {l.key === page && <span class="block h-0.5 bg-ember mt-1.5 -mb-2" aria-hidden="true" />}
           </a>
         ))
       }
@@ -46,12 +48,10 @@ const links: { key: PageKey; label: string }[] = [
     <div class="flex items-center gap-2 md:gap-3">
       <LangSwitch locale={locale} page={page} class="hidden sm:flex" />
 
-      {/* The phone number is the whole point of the site, so it never leaves the
-          viewport on desktop. On mobile the sticky CallBar does this job with a
-          bigger target, so the header keeps only the compact icon. */}
+      {/* Orange as fill behind white type, never as the type colour. */}
       <a
         href={`tel:${BUSINESS.phone.tel}`}
-        class="hidden md:flex items-center gap-2 bg-ember px-4 py-2.5 font-mono text-sm font-medium text-white transition-colors duration-200 hover:bg-ember-bright"
+        class="hidden md:flex items-center gap-2 bg-orange px-4 py-2.5 text-sm font-bold text-white tnum transition-colors duration-200 hover:bg-orange-bright"
         data-call-link
       >
         <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -62,7 +62,7 @@ const links: { key: PageKey; label: string }[] = [
 
       <button
         type="button"
-        class="lg:hidden -mr-2 p-2 text-white"
+        class="lg:hidden -mr-2 p-2 text-ink"
         aria-label={d.nav.menu}
         aria-expanded="false"
         aria-controls="mobile-nav"
@@ -75,7 +75,9 @@ const links: { key: PageKey; label: string }[] = [
     </div>
   </div>
 
-  <div id="mobile-nav" class="hidden lg:hidden border-t border-white/10 bg-graphite" data-menu-panel>
+  <div class="rule-orange" aria-hidden="true"></div>
+
+  <div id="mobile-nav" class="hidden lg:hidden bg-ink" data-menu-panel>
     <nav class="wrap flex flex-col py-2" aria-label={d.nav.menu}>
       {
         links.map((l) => (
@@ -83,15 +85,15 @@ const links: { key: PageKey; label: string }[] = [
             href={pathFor(locale, l.key)}
             aria-current={l.key === page ? "page" : undefined}
             class:list={[
-              "border-b border-white/8 py-3.5 text-base transition-colors duration-200 last:border-0",
-              l.key === page ? "text-ember-bright" : "text-white/80",
+              "border-b border-white/10 py-3.5 text-base transition-colors duration-200 last:border-0",
+              l.key === page ? "text-white font-bold" : "text-white/75",
             ]}
           >
             {l.label}
           </a>
         ))
       }
-      <LangSwitch locale={locale} page={page} class="sm:hidden pt-3 pb-1" />
+      <LangSwitch locale={locale} page={page} class="sm:hidden pt-3 pb-1" dark />
     </nav>
   </div>
 </header>

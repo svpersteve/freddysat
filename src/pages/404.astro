@@ -15,14 +15,14 @@ const copy = {
 
 <Base locale="es" page="home" title={copy.es.title} description={copy.es.body} robots="noindex, nofollow" document>
   <div class="wrap wrap-narrow">
-    <p class="eyebrow">Error 404</p>
+    <p class="label">Error 404</p>
 
     {
       LOCALES.map((locale) => (
-        <section class="mt-10 border-t border-steel-soft pt-6" lang={DICTS[locale].htmlLang}>
+        <section class="mt-10 border-t border-paper-edge pt-6" lang={DICTS[locale].htmlLang}>
           <h2 class="font-display text-2xl font-bold leading-tight">{copy[locale].title}</h2>
-          <p class="mt-2 text-graphite-70">{copy[locale].body}</p>
-          <a href={pathFor(locale, "home")} class="mt-3 inline-block font-mono text-sm text-ember underline-offset-4 hover:underline">
+          <p class="mt-2 text-ink-70">{copy[locale].body}</p>
+          <a href={pathFor(locale, "home")} class="mt-3 inline-block font-bold text-ink underline underline-offset-4">
             {DICTS[locale].nav.home} →
           </a>
         </section>
@@ -31,7 +31,7 @@ const copy = {
 
     <a
       href={`tel:${BUSINESS.phone.tel}`}
-      class="mt-10 inline-flex items-center gap-3 bg-ember px-6 py-4 font-mono text-xl text-white transition-colors duration-200 hover:bg-ember-bright"
+      class="mt-10 inline-flex items-center gap-3 bg-orange px-6 py-4 label text-xl text-white transition-colors duration-200 hover:bg-orange-bright"
       data-call-link
     >
       {BUSINESS.phone.display}

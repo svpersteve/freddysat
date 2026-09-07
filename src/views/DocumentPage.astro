@@ -12,10 +12,6 @@ const doc = LEGAL[locale][kind];
 const title = kind === "notice" ? d.legal.noticeTitle : d.legal.privacyTitle;
 const page: PageKey = kind === "notice" ? "legal" : "privacy";
 
-const address = [BUSINESS.address.street, BUSINESS.address.postalCode, BUSINESS.address.city]
-  .filter(Boolean)
-  .join(", ");
-
 // An unfilled identification field renders as a visible marker rather than an
 // empty gap. A legal notice with a blank where the NIF should be reads as
 // finished; one that says "pending" does not.
@@ -23,12 +19,12 @@ const pending = locale === "en" ? "[pending]" : locale === "ca" ? "[pendent]" : 
 const vars = {
   legalName: BUSINESS.legalName || pending,
   taxId: BUSINESS.taxId || pending,
-  address: address || pending,
+  address: BUSINESS.legalAddress || pending,
   email: BUSINESS.email,
   phone: BUSINESS.phone.display,
 };
 
-const isDraft = !BUSINESS.taxId;
+const isDraft = !BUSINESS.taxId || !BUSINESS.legalAddress || !BUSINESS.legalName;
 
 // These pages must not compete with the service pages in search results, and
 // while the identification block is unfilled they should not be indexed at all.
@@ -37,14 +33,14 @@ const robots = isDraft ? "noindex, nofollow" : "noindex, follow";
 
 <Base locale={locale} page={page} title={title} description={doc.intro} robots={robots} document>
   <div class="wrap wrap-narrow">
-    <p class="eyebrow">{BUSINESS.name}</p>
+    <p class="label">{BUSINESS.name}</p>
     <h1 class="mt-3 text-[clamp(2rem,5vw,3rem)]">{title}</h1>
-    <p class="mt-4 text-lg leading-relaxed text-graphite-70">{doc.intro}</p>
-    <p class="mt-3 font-mono text-xs text-graphite-45">{d.legal.lastUpdated}: {LEGAL_UPDATED}</p>
+    <p class="mt-4 text-lg leading-relaxed text-ink-70">{doc.intro}</p>
+    <p class="mt-3 label text-xs text-ink-45">{d.legal.lastUpdated}: {LEGAL_UPDATED}</p>
 
     {
       isDraft && (
-        <p class="mt-8 border-l-2 border-ember bg-ember-wash px-5 py-4 text-sm leading-relaxed text-graphite">
+        <p class="mt-8 border-l-2 border-orange bg-orange-wash px-5 py-4 text-sm leading-relaxed text-ink">
           {d.legal.draftWarning}
         </p>
       )
@@ -56,7 +52,7 @@ const robots = isDraft ? "noindex, nofollow" : "noindex, follow";
           <section>
             <h2 class="font-display text-xl font-bold leading-tight">{section.h}</h2>
             {section.p.map((paragraph) => (
-              <p class="mt-3 text-[0.9375rem] leading-relaxed text-graphite-70">{fill(paragraph, vars)}</p>
+              <p class="mt-3 text-[0.9375rem] leading-relaxed text-ink-70">{fill(paragraph, vars)}</p>
             ))}
           </section>
         ))
