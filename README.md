@@ -75,8 +75,39 @@ npm run deploy:preview   # build and upload a preview version, no promotion
 
 ### Domain
 
-`freddysat.es` is **not yet registered** — the `.es` registry returned NXDOMAIN
-when this was built. Once it is registered, the Cloudflare zone is created in
-Orlo's account and the registrar's nameservers pointed at the pair Cloudflare
-returns. DNS for this account is administered through the Orlo app's
-`Cloudflare::` service objects rather than by hand.
+Live preview right now: **https://freddysat.freddysat.workers.dev**
+
+`freddysat.es` was **not registered** when this was built — the `.es` registry
+returned NXDOMAIN — so the zone exists but is `pending`. Remaining steps, in
+order:
+
+1. **Register `freddysat.es`.** Nothing below works until the registry has it.
+2. **Point the registrar at these nameservers** (the zone is already created in
+   Orlo's Cloudflare account, id `9f238f8918c541e31e56c860bff2d05a`):
+
+   ```
+   jake.ns.cloudflare.com
+   leanna.ns.cloudflare.com
+   ```
+
+3. **Wait for the zone to go active.** Check with:
+
+   ```sh
+   dig NS freddysat.es @c.nic.es +short
+   ```
+
+4. **Attach the Worker to the domain.** Cloudflare dashboard → Workers →
+   `freddysat` → Settings → Domains & Routes → add `freddysat.es` and
+   `www.freddysat.es` as *custom domains* (they create their own proxied DNS
+   records). This cannot be scripted with Orlo's API token — it returns
+   `10405 Method not allowed for this authentication scheme`, so either use the
+   dashboard or a token carrying Workers Scripts: Edit.
+5. **Replace the placeholder business data** (`npm run check:placeholders`) and
+   redeploy. Do this *before* step 4 if the domain is going to be findable.
+
+Zone settings already applied: `ssl=strict`, `always_use_https=on`,
+`min_tls_version=1.2`.
+
+> Deploying this Worker set the **account-level** `workers.dev` subdomain to
+> `freddysat` (wrangler defaults it to the script name and the account had none
+> set). That is shared with everything else in Orlo's Cloudflare account.
