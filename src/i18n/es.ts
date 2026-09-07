@@ -71,17 +71,24 @@ const es = {
     whatsapp: "Escribir por WhatsApp",
   },
 
-  // What people actually say when they ring. Ordered by how often it is the
-  // first thing out of their mouth.
+  /**
+   * What people actually say when they ring, ordered by how often it is the
+   * first thing out of their mouth.
+   *
+   * `tile` is what the home page shows: six scan, eight are a wall. The other
+   * two stay in this list because they are still valid `?s=` values — an old
+   * link or a card handed out with ?s=no-enciende on it must keep prefilling
+   * the form, and dropping them from the deck would silently break that.
+   */
   symptoms: [
-    { id: "no-enfria", label: "No enfría", note: "Nevera o congelador" },
-    { id: "pierde-agua", label: "Pierde agua", note: "Lavadora, lavavajillas o termo" },
-    { id: "no-calienta", label: "No calienta", note: "Horno, secadora o agua caliente" },
-    { id: "no-gira", label: "No gira ni centrifuga", note: "Lavadora o secadora" },
-    { id: "no-desagua", label: "No desagua", note: "Lavadora o lavavajillas" },
-    { id: "no-enciende", label: "No enciende", note: "Cualquier aparato" },
-    { id: "hace-ruido", label: "Hace mucho ruido", note: "Rodamientos, bomba o ventilador" },
-    { id: "huele-quemado", label: "Huele a quemado", note: "Desenchúfelo y llámeme" },
+    { id: "no-enfria", tile: true, label: "No enfría", note: "Nevera o congelador" },
+    { id: "pierde-agua", tile: true, label: "Pierde agua", note: "Lavadora, lavavajillas o termo" },
+    { id: "no-calienta", tile: true, label: "No calienta", note: "Horno, secadora o agua caliente" },
+    { id: "no-gira", tile: true, label: "No gira ni centrifuga", note: "Lavadora o secadora" },
+    { id: "no-desagua", tile: true, label: "No desagua", note: "Lavadora o lavavajillas" },
+    { id: "no-enciende", tile: false, label: "No enciende", note: "Cualquier aparato" },
+    { id: "hace-ruido", tile: false, label: "Hace mucho ruido", note: "Rodamientos, bomba o ventilador" },
+    { id: "huele-quemado", tile: true, label: "Huele a quemado", note: "Desenchúfelo y llámeme" },
   ],
 
   urgent: {
@@ -100,7 +107,11 @@ const es = {
     coldLabel: "Frío",
     axisNote: "Ordenado por temperatura de trabajo",
     common: "Averías habituales",
-    cta: "Ver averías y precios",
+    // The home page states the range in one sentence and sends the reader who
+    // wants the detail to /servicios/, where the six cards live.
+    summary:
+      "Lavadoras, neveras, lavavajillas, hornos, secadoras, vitrocerámicas y termos eléctricos. Un mismo oficio en los dos extremos de la temperatura.",
+    cta: "Ver averías habituales de cada aparato",
   },
 
   boundary,
@@ -159,22 +170,20 @@ const es = {
     title: "Lo que cuesta, antes de empezar",
     lead:
       "El presupuesto se cierra en su casa, con el aparato abierto y el precio dicho en voz alta. Si no le convence, no se hace y no se toca nada más.",
+    // One sentence each: the second always restated the first. CallPanel reads
+    // points[0] and points[2] for its terms strip, so the order is load-bearing.
     points: [
       {
         title: "Desplazamiento {fee} €, gratis si repara",
-        body: "Se cobra el desplazamiento solo si decide no arreglarlo. Si sigue adelante con la reparación, no se cobra aparte.",
+        body: "Se cobra solo si decide no arreglarlo.",
       },
       {
         title: "Presupuesto cerrado antes de tocar nada",
-        body: "Mano de obra y piezas dichas y aceptadas antes de empezar. Sin ampliaciones a mitad del trabajo.",
+        body: "Mano de obra y piezas aceptadas antes de empezar.",
       },
       {
         title: "{warranty} meses de garantía",
-        body: "Por escrito, sobre la mano de obra y la pieza sustituida. Si vuelve a fallar lo mismo, vuelvo sin coste.",
-      },
-      {
-        title: "Factura con IVA siempre",
-        body: "Factura real, con NIF y desglose. Necesaria para la garantía y para deducirla si es un local.",
+        body: "Por escrito, sobre la mano de obra y la pieza sustituida.",
       },
     ],
   },
@@ -183,11 +192,12 @@ const es = {
     label: "Cómo funciona",
     title: "Cuatro pasos y ya está",
     // A genuine sequence, so it is numbered. Nothing else on the site is.
+    // Headings only: everybody already knows how a repair appointment works.
     steps: [
-      { title: "Me llama", body: "Cuénteme el síntoma y la marca. Muchas averías se identifican por teléfono." },
-      { title: "Le doy una franja", body: "Le digo qué día y en qué franja de dos horas paso. Le aviso al salir." },
-      { title: "Diagnóstico y precio", body: "Abro el aparato, veo la avería y le digo el precio cerrado." },
-      { title: "Se repara y se factura", body: "Con la pieza en la furgoneta, casi siempre en la misma visita." },
+      { title: "Me llama" },
+      { title: "Le doy una franja" },
+      { title: "Diagnóstico y precio" },
+      { title: "Se repara" },
     ],
   },
 
@@ -205,25 +215,32 @@ const es = {
   faq: {
     label: "Dudas frecuentes",
     title: "Lo que me preguntan por teléfono",
+    // Ids, because the four the home page shows and the two that moved to the
+    // contact page are picked by id. All six stay in the FAQPage markup.
     items: [
       {
+        id: "tiempo",
         q: "¿Cuánto tardan en venir?",
         a: "Normalmente atiendo en menos de {hours} horas laborables. Las averías de frío en verano y las fugas de agua las pongo por delante del resto.",
       },
       {
+        id: "marcas",
         q: "¿Trabaja con mi marca?",
         a: "Sí. Reparo todas las marcas domésticas habituales: Balay, Bosch, Siemens, Fagor, Zanussi, AEG, Whirlpool, Beko, LG, Samsung y demás. No soy servicio oficial de ninguna, lo que significa que no estoy obligado a cobrar su tarifa.",
       },
       {
+        id: "merece-la-pena",
         q: "¿Merece la pena repararlo o compro uno nuevo?",
         a: "Se lo digo claro y en contra de mi interés si hace falta. Con un aparato de más de doce años y una avería grave, casi nunca sale a cuenta. Prefiero perder la reparación a hacerle gastar mal el dinero.",
       },
-      { q: boundary.title, a: boundary.body },
+      { id: "circuito-gas", q: boundary.title, a: boundary.body },
       {
+        id: "pago",
         q: "¿Puedo pagar con tarjeta?",
-        a: "Sí, con tarjeta, Bizum o efectivo, y siempre con factura.",
+        a: "Sí, con tarjeta, Bizum o efectivo.",
       },
       {
+        id: "fines-de-semana",
         q: "¿Trabaja fines de semana?",
         a: "Sí. Atiendo los siete días de la semana, de {open} a {close}, festivos incluidos. Una nevera no elige el sábado para estropearse.",
       },
@@ -282,7 +299,7 @@ const es = {
   meta: {
     homeTitle: "Reparación de electrodomésticos en Barcelona",
     homeDescription:
-      "SAT a domicilio en Barcelona: lavadoras, neveras, hornos, secadoras y lavavajillas. Presupuesto cerrado, {warranty} meses de garantía y factura. Llame al {phone}.",
+      "SAT a domicilio en Barcelona: lavadoras, neveras, hornos, secadoras y lavavajillas. Presupuesto cerrado y {warranty} meses de garantía. Llame al {phone}.",
     servicesTitle: "Servicios de reparación de electrodomésticos",
     servicesDescription:
       "Reparo lavadoras, secadoras, lavavajillas, hornos, vitrocerámicas, neveras y termos eléctricos a domicilio en Barcelona.",

@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import PageHeader from "../components/PageHeader.astro";
 import ContactForm from "../components/ContactForm.astro";
+import Faq from "../components/Faq.astro";
 import CallPanel from "../components/CallPanel.astro";
 import { AREAS, BUSINESS } from "../config/business";
 import { fill, t, type Locale } from "../i18n";
@@ -76,4 +77,8 @@ const rows = [
       <ContactForm locale={locale} />
     </div>
   </section>
+
+  {/* The two housekeeping questions, off the home page and next to the form
+      where somebody is already deciding how to pay and when to book. */}
+  <Faq locale={locale} pick={["pago", "fines-de-semana"]} />
 </Base>

@@ -1,0 +1,31 @@
+---
+import { pathFor, t, type Locale } from "../i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const d = t(locale);
+---
+
+{/*
+  The home page's stand-in for the appliance grid, which now lives on
+  /servicios/. Two different people were being served in the same scroll: the
+  one standing next to a leaking washing machine, and the one comparing three
+  technicians. Six cards of fault lists were the second person's content
+  sitting in the first person's way — and they restated the symptom picker
+  directly above them. The range is stated in one sentence instead, with a door
+  to the detail for anyone who wants it.
+*/}
+<section class="border-b border-paper-edge py-16 md:py-24">
+  <div class="wrap max-w-2xl">
+    <p class="label">{d.services.label}</p>
+    <h2 class="mt-3 text-[clamp(1.875rem,4.5vw,3rem)]">{d.services.title}</h2>
+    <p class="mt-4 text-lg leading-relaxed text-ink-70">{d.services.summary}</p>
+    <a
+      href={pathFor(locale, "services")}
+      class="mt-6 inline-flex items-center gap-2 font-bold text-ink underline-offset-4 transition-all duration-200 hover:underline"
+    >
+      {d.services.cta}
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>

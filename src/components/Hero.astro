@@ -48,11 +48,14 @@ const photoAlt = {
     {/* Symptom-first triage. Nobody rings a SAT thinking "I need a washing
         machine technician" — they ring thinking "it won't drain". The chips are
         the site's navigation for that state of mind, and each one carries its
-        symptom through to the contact form. */}
+        symptom through to the contact form.
+
+        Six, not eight: eight is a wall, six scans. The two that are not tiles
+        are still live ?s= values -- see the note on the symptoms deck. */}
     <p class="label mt-12">{d.hero.pickSymptom}</p>
     <ul class="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
       {
-        d.symptoms.map((s) => (
+        d.symptoms.filter((s) => s.tile).map((s) => (
           <li>
             <a
               href={`${contact}?s=${s.id}`}

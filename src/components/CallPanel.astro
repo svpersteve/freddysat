@@ -3,8 +3,20 @@ import OpenNow from "./OpenNow.astro";
 import { BUSINESS } from "../config/business";
 import { fill, t, type Locale } from "../i18n";
 
-interface Props { locale: Locale; class?: string }
-const { locale, class: className = "" } = Astro.props;
+interface Props {
+  locale: Locale;
+  class?: string;
+  /**
+   * Drops the opening-hours row and the terms strip, leaving the two buttons.
+   *
+   * The home page carries this panel twice -- once in the hero, once in the
+   * closing block -- and a reader who has scrolled the whole page does not need
+   * the call-out fee, the guarantee and the opening hours told to them a second
+   * time forty words from the footer, which states the hours again anyway.
+   */
+  bare?: boolean;
+}
+const { locale, class: className = "", bare = false } = Astro.props;
 const d = t(locale);
 
 const waText = encodeURIComponent(
@@ -16,10 +28,14 @@ const waText = encodeURIComponent(
 {/* The one dark object on a white page, holding the only two actions that
     matter. Orange fills the call button; the type on it stays white. */}
 <div class={`bg-ink text-white ${className}`}>
-  <div class="flex items-center justify-between gap-4 border-b border-white/15 px-5 py-3">
-    <OpenNow locale={locale} class="text-white/80" />
-    <span class="label text-white/45 hidden sm:block">{BUSINESS.address.city}</span>
-  </div>
+  {
+    !bare && (
+      <div class="flex items-center justify-between gap-4 border-b border-white/15 px-5 py-3">
+        <OpenNow locale={locale} class="text-white/80" />
+        <span class="label text-white/45 hidden sm:block">{BUSINESS.address.city}</span>
+      </div>
+    )
+  }
 
   <div class="flex flex-col gap-3 p-5 sm:flex-row sm:items-stretch">
     <a
@@ -47,9 +63,13 @@ const waText = encodeURIComponent(
   </div>
 
   {/* The numbers people are most suspicious about, stated before they ask. */}
-  <p class="border-t border-white/15 px-5 py-3 text-xs leading-relaxed text-white/60">
-    {fill(d.trust.points[0].title)}
-    <span class="mx-1.5 text-white/30">·</span>
-    {fill(d.trust.points[2].title)}
-  </p>
+  {
+    !bare && (
+      <p class="border-t border-white/15 px-5 py-3 text-xs leading-relaxed text-white/60">
+        {fill(d.trust.points[0].title)}
+        <span class="mx-1.5 text-white/30">·</span>
+        {fill(d.trust.points[2].title)}
+      </p>
+    )
+  }
 </div>

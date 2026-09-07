@@ -1,9 +1,22 @@
 ---
 import { fill, t, type Locale } from "../i18n";
 
-interface Props { locale: Locale }
-const { locale } = Astro.props;
+interface Props {
+  locale: Locale;
+  /** Ids to render, in this order. Omitted renders the whole deck. */
+  pick?: readonly string[];
+  /**
+   * Emits the FAQPage node, which always carries the *whole* deck rather than
+   * whatever this instance renders. Only one page may set it: two FAQPage nodes
+   * on two URLs describing the same six questions is duplicate structured data.
+   */
+  schema?: boolean;
+}
+const { locale, pick, schema = false } = Astro.props;
 const d = t(locale);
+
+const byId = new Map(d.faq.items.map((item) => [item.id, item]));
+const items = pick ? pick.flatMap((id) => { const item = byId.get(id); return item ? [item] : []; }) : d.faq.items;
 
 // FAQPage markup earns the expandable answers in Google's results, which for a
 // query like "¿cuánto cuesta arreglar una lavadora?" is most of the click.
@@ -29,7 +42,7 @@ const faqSchema = {
         without a line of JavaScript. */}
     <div class="border-t border-paper-edge">
       {
-        d.faq.items.map((item) => (
+        items.map((item) => (
           <details class="group border-b border-paper-edge">
             <summary class="flex cursor-pointer list-none items-start justify-between gap-6 py-5 font-display text-base font-bold leading-snug underline-offset-4 transition-all duration-200 hover:underline [&::-webkit-details-marker]:hidden">
               {fill(item.q)}
@@ -50,4 +63,4 @@ const faqSchema = {
   </div>
 </section>
 
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
+{schema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />}

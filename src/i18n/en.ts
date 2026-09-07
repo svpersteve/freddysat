@@ -58,15 +58,16 @@ const en: Dict = {
     whatsapp: "Message on WhatsApp",
   },
 
+  // `tile` is the home-page six; the other two stay addressable as ?s= values.
   symptoms: [
-    { id: "no-enfria", label: "Not cooling", note: "Fridge or freezer" },
-    { id: "pierde-agua", label: "Leaking water", note: "Washer, dishwasher or water heater" },
-    { id: "no-calienta", label: "Not heating", note: "Oven, dryer or hot water" },
-    { id: "no-gira", label: "Won't spin", note: "Washing machine or dryer" },
-    { id: "no-desagua", label: "Won't drain", note: "Washing machine or dishwasher" },
-    { id: "no-enciende", label: "Won't turn on", note: "Any appliance" },
-    { id: "hace-ruido", label: "Very loud", note: "Bearings, pump or fan" },
-    { id: "huele-quemado", label: "Burning smell", note: "Unplug it and call me" },
+    { id: "no-enfria", tile: true, label: "Not cooling", note: "Fridge or freezer" },
+    { id: "pierde-agua", tile: true, label: "Leaking water", note: "Washer, dishwasher or water heater" },
+    { id: "no-calienta", tile: true, label: "Not heating", note: "Oven, dryer or hot water" },
+    { id: "no-gira", tile: true, label: "Won't spin", note: "Washing machine or dryer" },
+    { id: "no-desagua", tile: true, label: "Won't drain", note: "Washing machine or dishwasher" },
+    { id: "no-enciende", tile: false, label: "Won't turn on", note: "Any appliance" },
+    { id: "hace-ruido", tile: false, label: "Very loud", note: "Bearings, pump or fan" },
+    { id: "huele-quemado", tile: true, label: "Burning smell", note: "Unplug it and call me" },
   ],
 
   urgent: {
@@ -85,7 +86,9 @@ const en: Dict = {
     coldLabel: "Cold",
     axisNote: "Ordered by working temperature",
     common: "Common faults",
-    cta: "See faults and prices",
+    summary:
+      "Washing machines, fridges, dishwashers, ovens, dryers, hobs and electric water heaters. One trade at both ends of the temperature range.",
+    cta: "Common faults for each appliance",
   },
 
   boundary,
@@ -146,19 +149,15 @@ const en: Dict = {
     points: [
       {
         title: "{fee} € call-out, waived if I repair",
-        body: "You only pay the call-out if you decide not to go ahead. Approve the repair and it isn't charged on top.",
+        body: "You only pay it if you decide not to go ahead.",
       },
       {
         title: "Fixed quote before anything is opened up",
-        body: "Labour and parts quoted and agreed before I start. No growing the bill halfway through.",
+        body: "Labour and parts agreed before I start.",
       },
       {
         title: "{warranty} months' guarantee",
-        body: "In writing, covering labour and the part I fitted. If the same fault comes back, so do I, at no charge.",
-      },
-      {
-        title: "Always a proper invoice",
-        body: "A real factura with tax number and itemised lines. You need it for the guarantee, and your landlord will want it.",
+        body: "In writing, covering labour and the part I fitted.",
       },
     ],
   },
@@ -167,10 +166,10 @@ const en: Dict = {
     label: "How it works",
     title: "Four steps, that's it",
     steps: [
-      { title: "You call", body: "Describe the symptom and the brand. A lot of faults are identifiable over the phone." },
-      { title: "I give you a window", body: "A day and a two-hour window. I ring when I set off." },
-      { title: "Diagnosis and price", body: "I open the appliance, find the fault and give you a fixed price." },
-      { title: "Repair and invoice", body: "With the part on the van, usually on the same visit." },
+      { title: "You call" },
+      { title: "I give you a window" },
+      { title: "Diagnosis and price" },
+      { title: "Repair" },
     ],
   },
 
@@ -187,29 +186,35 @@ const en: Dict = {
     title: "What people ask me on the phone",
     items: [
       {
+        id: "tiempo",
         q: "How soon can you come?",
         a: "Usually within {hours} working hours. Cooling faults in summer and water leaks go to the front of the queue.",
       },
       {
+        id: "marcas",
         q: "Do you work on my brand?",
         a: "Yes. I repair all the usual domestic brands: Balay, Bosch, Siemens, Fagor, Zanussi, AEG, Whirlpool, Beko, LG, Samsung and the rest. I'm not an official service centre for any of them, which means I'm not obliged to charge their rates.",
       },
       {
+        id: "merece-la-pena",
         q: "Is it worth repairing, or should I replace it?",
         a: "I'll tell you straight, against my own interest when that's the honest answer. On an appliance over twelve years old with a major failure, it rarely adds up. I'd rather lose the job than have you spend badly.",
       },
-      { q: boundary.title, a: boundary.body },
+      { id: "circuito-gas", q: boundary.title, a: boundary.body },
       {
+        id: "propietario",
         q: "Who pays — me or my landlord?",
         a: "In a Spanish rental, ordinary wear and tear on appliances that came with the flat is normally the landlord's, and damage from misuse is the tenant's. Send them the invoice and the diagnosis; I write both clearly enough to settle it.",
       },
       {
+        id: "fines-de-semana",
         q: "Do you work weekends?",
         a: "Yes. Seven days a week, {open} to {close}, public holidays included. A fridge doesn't pick Saturday to break down.",
       },
       {
+        id: "pago",
         q: "Can I pay by card?",
-        a: "Yes — card, Bizum or cash, always with an invoice.",
+        a: "Yes — card, Bizum or cash.",
       },
     ],
   },
@@ -266,7 +271,7 @@ const en: Dict = {
   meta: {
     homeTitle: "Appliance repair in Barcelona",
     homeDescription:
-      "Callout repairs in Barcelona: washing machines, fridges, ovens, dryers and dishwashers. Fixed quotes, {warranty} months' guarantee, proper invoice. Call {phone}.",
+      "Callout repairs in Barcelona: washing machines, fridges, ovens, dryers and dishwashers. Fixed quotes and {warranty} months' guarantee. Call {phone}.",
     servicesTitle: "Appliance repair services",
     servicesDescription:
       "I repair washing machines, dryers, dishwashers, ovens, hobs, fridges and electric water heaters at your address in Barcelona.",
