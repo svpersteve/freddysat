@@ -84,9 +84,9 @@ const check = (name, ok, detail = "") => {
 {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(`${BASE}/servicios/`, { waitUntil: "networkidle" });
-  await page.locator('nav[aria-label="Idioma"] a[hreflang="ca-ES"]').first().click();
+  await page.locator('nav[aria-label="Idioma"] a[hreflang="en-GB"]').first().click();
   await page.waitForLoadState("networkidle");
-  check("ES /servicios/ -> CA /ca/serveis/", page.url().endsWith("/ca/serveis/"), page.url());
+  check("ES /servicios/ -> EN /en/services/", page.url().endsWith("/en/services/"), page.url());
   await page.close();
 }
 

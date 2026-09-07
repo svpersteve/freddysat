@@ -6,7 +6,7 @@ const { locale, page, class: className = "", dark = false } = Astro.props;
 ---
 
 {/* Links to the *equivalent* page in each language, not to its home page —
-    /servicios/ swaps to /ca/serveis/. Losing your place is the usual bug in a
+    /servicios/ swaps to /en/services/. Losing your place is the usual bug in a
     language switcher and the main reason slugs are held in the dictionaries. */}
 <nav class={`flex items-center text-xs ${className}`} aria-label="Idioma">
   {

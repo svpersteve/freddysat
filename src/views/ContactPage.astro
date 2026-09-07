@@ -10,10 +10,10 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const d = t(locale);
 
-// The email row only renders once a mailbox exists; the domain is not
-// registered yet, so listing an address would advertise a dead inbox.
+// The email row only renders once a mailbox exists; the mailbox is still
+// being set up, so listing an address would advertise a dead inbox.
 const rows = [
-  { label: d.contact.phoneLabel, value: BUSINESS.phone.display, href: `tel:${BUSINESS.phone.tel}` },
+  { label: d.contact.mobileLabel, value: BUSINESS.phone.display, href: `tel:${BUSINESS.phone.tel}` },
   ...(BUSINESS.email ? [{ label: d.contact.emailLabel, value: BUSINESS.email, href: `mailto:${BUSINESS.email}` }] : []),
 ];
 ---
@@ -25,6 +25,18 @@ const rows = [
   description={fill(d.meta.contactDescription)}
 >
   <PageHeader label={d.contact.label} title={d.contact.title} lead={d.contact.lead} />
+
+  {/*
+    Signed, and above the form. Every competitor on this search term is an
+    anonymous dispatch desk, so the one line they cannot write is the name of
+    the person who will actually knock on the door.
+  */}
+  <section class="border-b border-paper-edge bg-paper-shade py-10 md:py-12">
+    <div class="wrap flex max-w-3xl flex-col gap-6 sm:flex-row sm:items-center">
+      <!-- TODO: portrait of Freddy, 800x800, /img/freddy.jpg -->
+      <p class="text-lg leading-relaxed text-ink">{d.contact.intro}</p>
+    </div>
+  </section>
 
   <section class="py-14 md:py-20">
     <div class="wrap grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">

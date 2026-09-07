@@ -10,7 +10,6 @@ const year = new Date().getFullYear();
 
 const serviceLinks: { key: PageKey; label: string }[] = [
   { key: "services", label: d.nav.services },
-  { key: "aircon", label: d.nav.aircon },
   { key: "areas", label: d.nav.areas },
   { key: "contact", label: d.nav.contact },
 ];
@@ -26,7 +25,13 @@ const serviceLinks: { key: PageKey; label: string }[] = [
         <a href={`tel:${BUSINESS.phone.tel}`} class="block text-white underline-offset-4 transition-opacity hover:underline" data-call-link>
           {BUSINESS.phone.display}
         </a>
-        <a href={`mailto:${BUSINESS.email}`} class="block transition-colors hover:text-white">{BUSINESS.email}</a>
+        {
+          BUSINESS.email && (
+            <a href={`mailto:${BUSINESS.email}`} class="block transition-colors hover:text-white">
+              {BUSINESS.email}
+            </a>
+          )
+        }
       </div>
     </div>
 
@@ -65,7 +70,7 @@ const serviceLinks: { key: PageKey; label: string }[] = [
       </a>
 
       <h2 class="label mt-7 text-white/40">{d.contact.areaLabel}</h2>
-      <p class="mt-3 text-xs leading-relaxed">{AREAS.slice(0, 6).join(" · ")} …</p>
+      <p class="mt-3 text-xs leading-relaxed">{AREAS.join(" · ")}</p>
     </div>
   </div>
 

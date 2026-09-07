@@ -24,9 +24,8 @@ export const BUSINESS = {
   legalName: "", // TODO registered name (autónomo or S.L.)
   taxId: "", // TODO NIF/CIF — required on the aviso legal page by Spanish law
   tagline: {
-    es: "Reparación de electrodomésticos y aire acondicionado en Barcelona",
-    ca: "Reparació d'electrodomèstics i aire condicionat a Barcelona",
-    en: "Appliance and air conditioning repair in Barcelona",
+    es: "Reparación de electrodomésticos a domicilio en Barcelona",
+    en: "Callout appliance repair in Barcelona",
   },
 
   /** From the Google Business Profile. One mobile, which is also the WhatsApp. */
@@ -77,13 +76,35 @@ export const BUSINESS = {
   social: { instagram: "", facebook: "" }, // TODO none on the profile yet
 } as const;
 
-/** Neighbourhoods and nearby towns actually covered. Drives the areas page. */
+/**
+ * The six areas actually worked, and the same six the Google Business Profile
+ * lists. Google reads a service-area business's site against its profile, so a
+ * longer list here than there costs trust on both sides — and claiming the
+ * whole metropolitan area is the dispatch-aggregator pattern this business is
+ * positioned against. Cut from sixteen on 2026-09-07.
+ *
+ * Drives the areas page, the footer, the contact page and areaServed in the
+ * LocalBusiness markup, so the six can never disagree between them.
+ */
 export const AREAS = [
-  "Eixample", "Gràcia", "Sant Martí", "Sants-Montjuïc", "Sarrià-Sant Gervasi",
-  "Les Corts", "Horta-Guinardó", "Nou Barris", "Sant Andreu", "Ciutat Vella",
-  "L'Hospitalet", "Badalona", "Santa Coloma", "Esplugues", "Cornellà", "Sant Adrià",
+  "Nou Barris",
+  "Sant Martí",
+  "Sants-Montjuïc",
+  "Ciutat Vella",
+  "L'Hospitalet de Llobregat",
+  "Santa Coloma de Gramenet",
 ] as const;
 
-export type Locale = "es" | "ca" | "en";
-export const LOCALES: Locale[] = ["es", "ca", "en"];
+/**
+ * Castellano and English. The Catalan marketing locale was removed on
+ * 2026-09-07 because Freddy does not speak Catalan, and those pages were
+ * soliciting enquiries he could not then conduct the job in.
+ *
+ * That is a decision about *marketing* pages only. The Codi de consum de
+ * Catalunya (art. 128-1) still requires quotes, invoices, receipts, price lists
+ * and fixed signage to be available in Catalan; that obligation lives in the
+ * invoice and quote templates, not here. See README.md before "tidying" this.
+ */
+export type Locale = "es" | "en";
+export const LOCALES: Locale[] = ["es", "en"];
 export const DEFAULT_LOCALE: Locale = "es";

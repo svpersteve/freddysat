@@ -10,7 +10,7 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import CallBar from "../components/CallBar.astro";
-import { BUSINESS, SITE_URL } from "../config/business";
+import { AREAS, BUSINESS, SITE_URL } from "../config/business";
 import { alternatesFor, fill, t, type Locale, type PageKey } from "../i18n";
 
 interface Props {
@@ -30,26 +30,35 @@ const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const alternates = alternatesFor(page);
 
 // One LocalBusiness node, emitted on every page so any landing page can be the
-// one Google reads. HVACBusiness is the closest schema.org type covering both
-// halves of the trade.
+// one Google reads.
+//
+// Plain LocalBusiness, not HVACBusiness: Freddy holds no fluorinated-gas
+// certificate, and declaring an HVAC business in machine-readable markup is a
+// claim to exactly the work he cannot legally do. schema.org has no
+// appliance-repair type, so the generic one is both the honest and the closest.
 //
 // No PostalAddress: this is a service-area business and the Google profile
 // carries no street address either. Publishing an invented one here would
 // contradict the listing that already points at this domain, which is the
 // fastest way to have both distrusted.
+//
+// areaServed is the same six areas as the profile and the footer, from one
+// constant — a site that claims more ground than the profile is a mismatch
+// Google reads as untrustworthy.
 const schema = {
   "@context": "https://schema.org",
-  "@type": "HVACBusiness",
+  "@type": "LocalBusiness",
   "@id": `${SITE_URL}/#business`,
   name: BUSINESS.name,
   description: fill(d.footer.blurb),
   url: SITE_URL,
   telephone: BUSINESS.phone.tel,
+  ...(BUSINESS.email ? { email: BUSINESS.email } : {}),
   image: `${SITE_URL}/brand/logo-square.svg`,
   logo: `${SITE_URL}/brand/logo-primary.svg`,
   sameAs: [BUSINESS.google.profileUrl],
   address: { "@type": "PostalAddress", addressLocality: BUSINESS.address.city, addressRegion: BUSINESS.address.region, addressCountry: BUSINESS.address.country },
-  areaServed: { "@type": "City", name: BUSINESS.address.city },
+  areaServed: AREAS.map((area) => ({ "@type": "City", name: area })),
   geo: { "@type": "GeoCoordinates", latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
   openingHoursSpecification: [
     {

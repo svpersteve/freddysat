@@ -1,0 +1,32 @@
+# Cloudflare static-asset redirects, evaluated before anything is served from
+# dist/, so a retired URL lands on its replacement rather than the 404 page.
+# Both the bare path and the splat are listed: the site builds with
+# trailingSlash "always", but an inbound link or an old Google result can
+# arrive either way.
+
+# Air conditioning, retired 2026-09-07. Freddy holds no carnet RITE and no
+# fluorinated-gas certificate, so the page advertised work he cannot legally
+# do. The copy is parked in drafts/ and these lines come out the day it
+# goes back up.
+/aire-acondicionado        /servicios/     301
+/aire-acondicionado/*      /servicios/     301
+/en/air-conditioning       /en/services/   301
+/en/air-conditioning/*     /en/services/   301
+
+# Catalan marketing locale, removed 2026-09-07 — Freddy does not speak
+# Catalan. Each URL goes to its own Spanish counterpart rather than dumping
+# the lot on the home page, so an indexed deep link keeps its meaning.
+/ca/serveis                /servicios/     301
+/ca/serveis/*              /servicios/     301
+/ca/zones                  /zonas/         301
+/ca/zones/*                /zonas/         301
+/ca/contacte               /contacto/      301
+/ca/contacte/*             /contacto/      301
+/ca/avis-legal             /aviso-legal/   301
+/ca/avis-legal/*           /aviso-legal/   301
+/ca/privacitat             /privacidad/    301
+/ca/privacitat/*           /privacidad/    301
+/ca/aire-condicionat       /servicios/     301
+/ca/aire-condicionat/*     /servicios/     301
+/ca                        /               301
+/ca/*                      /               301

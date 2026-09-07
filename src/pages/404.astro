@@ -1,15 +1,14 @@
 ---
-// Served by Cloudflare for any unmatched path, in every language — so it is
-// written to work for a visitor who arrived expecting Catalan or English.
+// Served by Cloudflare for any unmatched path, in either language — so it is
+// written to work for a visitor who arrived expecting English.
 // Castellano leads because it is the default locale.
 import Base from "../layouts/Base.astro";
 import { BUSINESS } from "../config/business";
 import { DICTS, LOCALES, pathFor } from "../i18n";
 
 const copy = {
-  es: { title: "Esta página no existe", body: "El enlace es antiguo o tiene una errata. Vuelva al inicio o llámenos directamente." },
-  ca: { title: "Aquesta pàgina no existeix", body: "L'enllaç és antic o té una errada. Torni a l'inici o truqui'ns directament." },
-  en: { title: "This page doesn't exist", body: "The link is old or mistyped. Go back to the home page, or just call us." },
+  es: { title: "Esta página no existe", body: "El enlace es antiguo o tiene una errata. Vuelva al inicio o llámeme directamente." },
+  en: { title: "This page doesn't exist", body: "The link is old or mistyped. Go back to the home page, or just call me." },
 };
 ---
 

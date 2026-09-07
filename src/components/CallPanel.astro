@@ -8,7 +8,6 @@ const { locale, class: className = "" } = Astro.props;
 const d = t(locale);
 
 const waText = encodeURIComponent(
-  locale === "ca" ? "Hola, tinc una avaria i voldria demanar hora." :
   locale === "en" ? "Hello, I have a broken appliance and would like to book a visit." :
   "Hola, tengo una avería y quería pedir cita."
 );

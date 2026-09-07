@@ -7,7 +7,17 @@ import type { Dict } from "./es";
  * often unsure whether the landlord or they pay for the repair, and has less
  * feel for what a fair Spanish call-out charge looks like — so the copy is
  * plainer about money and about who to ask.
+ *
+ * First person singular throughout, as in `es.ts`, and for the same reason.
  */
+
+/** The refrigerant boundary. See the note on the Spanish original. */
+const boundary = {
+  title: "What if the fault is in the refrigerant circuit?",
+  body:
+    "I'll tell you, and I won't charge you for finding out. A sealed cooling circuit can only legally be opened by a technician with a fluorinated gas certificate, and I work alongside one. I'd rather hand you the right contact than bodge something that won't last.",
+} as const;
+
 const en: Dict = {
   locale: "en",
   htmlLang: "en-GB",
@@ -17,7 +27,6 @@ const en: Dict = {
   nav: {
     home: "Home",
     services: "Services",
-    aircon: "Air conditioning",
     areas: "Areas",
     contact: "Contact",
     call: "Call",
@@ -28,7 +37,6 @@ const en: Dict = {
 
   slugs: {
     services: "services",
-    aircon: "air-conditioning",
     areas: "areas",
     contact: "contact",
     legal: "legal-notice",
@@ -39,7 +47,7 @@ const en: Dict = {
     label: "Repairs in Barcelona",
     title: "What's broken?",
     lead:
-      "We repair home appliances and air conditioning at your address in Barcelona. Tell us what it's doing and we'll tell you today whether it's worth fixing and what it costs.",
+      "I repair home appliances at your address in Barcelona. Tell me what it's doing and I'll tell you today whether it's worth fixing and what it costs.",
     pickSymptom: "Pick the symptom",
     orCall: "or just call",
     availableNow: "Open now",
@@ -51,34 +59,36 @@ const en: Dict = {
   },
 
   symptoms: [
-    { id: "no-enfria", label: "Not cooling", note: "Fridge, freezer or A/C" },
+    { id: "no-enfria", label: "Not cooling", note: "Fridge or freezer" },
     { id: "pierde-agua", label: "Leaking water", note: "Washer, dishwasher or water heater" },
     { id: "no-calienta", label: "Not heating", note: "Oven, dryer or hot water" },
     { id: "no-gira", label: "Won't spin", note: "Washing machine or dryer" },
     { id: "no-desagua", label: "Won't drain", note: "Washing machine or dishwasher" },
     { id: "no-enciende", label: "Won't turn on", note: "Any appliance" },
     { id: "hace-ruido", label: "Very loud", note: "Bearings, pump or fan" },
-    { id: "huele-quemado", label: "Burning smell", note: "Unplug it and call us" },
+    { id: "huele-quemado", label: "Burning smell", note: "Unplug it and call me" },
   ],
 
   urgent: {
     title: "If you smell burning, or there's water on the floor",
     body:
-      "Unplug the appliance and shut off the stopcock first. Then call us — those two faults don't wait until tomorrow.",
+      "Unplug the appliance and shut off the stopcock first. Then call me — those two faults don't wait until tomorrow.",
     cta: "Call now",
   },
 
   services: {
-    label: "What we fix",
+    label: "What I fix",
     title: "From the things that heat to the things that cool",
     lead:
-      "One trade at both ends: elements, thermostats and probes on one side; compressors, refrigerant and cooling circuits on the other.",
+      "One trade at both ends: elements, thermostats and probes on one side; fans, defrost circuits and control boards on the other.",
     hotLabel: "Heat",
     coldLabel: "Cold",
     axisNote: "Ordered by working temperature",
     common: "Common faults",
     cta: "See faults and prices",
   },
+
+  boundary,
 
   catalogue: [
     {
@@ -98,15 +108,17 @@ const en: Dict = {
     {
       id: "termos",
       pole: "hot",
-      name: "Water heaters",
-      blurb: "Electric tanks and gas heaters: element, magnesium anode, thermostat and overheat cut-outs.",
+      // Electric only: a gas water heater is work for a registered gas
+      // installer, and that certificate is one Freddy doesn't hold either.
+      name: "Electric water heaters",
+      blurb: "Electric storage tanks: element, magnesium anode, thermostat and overheat cut-outs.",
       faults: ["No hot water", "Trips the breaker", "Drips underneath", "Water comes out scalding"],
     },
     {
       id: "lavadoras",
       pole: "mid",
       name: "Washing machines",
-      blurb: "The bulk of our work. Drum bearings, drain pumps, inlet valves and control boards.",
+      blurb: "The bulk of my work. Drum bearings, drain pumps, inlet valves and control boards.",
       faults: ["Won't spin", "Won't drain", "Leaking", "Sounds like a jet taking off"],
     },
     {
@@ -119,16 +131,10 @@ const en: Dict = {
     {
       id: "frigorificos",
       pole: "cold",
+      // Everything outside the sealed circuit. Not what's inside it: see `boundary`.
       name: "Fridges and freezers",
-      blurb: "Compressors, thermostats, defrost heaters and refrigerant leaks in the cooling circuit.",
-      faults: ["Not cooling", "Over-icing", "Motor never stops", "Water pooling in the drawer"],
-    },
-    {
-      id: "aire",
-      pole: "cold",
-      name: "Air conditioning",
-      blurb: "Split, multi-split and ducted. Regassing, coil cleaning, leak detection and installation.",
-      faults: ["Not cooling", "Dripping indoors", "Smells bad", "Outdoor unit is noisy"],
+      blurb: "Thermostats, fans, defrost heaters, control boards, door seals and blocked drains.",
+      faults: ["Not cooling", "Over-icing", "Water pooling in the drawer", "Door won't seal"],
     },
   ],
 
@@ -139,16 +145,16 @@ const en: Dict = {
       "The quote is agreed at your address, with the appliance open and the number said out loud. If you don't like it, nothing else gets touched.",
     points: [
       {
-        title: "{fee} € call-out, waived if we repair",
+        title: "{fee} € call-out, waived if I repair",
         body: "You only pay the call-out if you decide not to go ahead. Approve the repair and it isn't charged on top.",
       },
       {
         title: "Fixed quote before anything is opened up",
-        body: "Labour and parts quoted and agreed before we start. No growing the bill halfway through.",
+        body: "Labour and parts quoted and agreed before I start. No growing the bill halfway through.",
       },
       {
         title: "{warranty} months' guarantee",
-        body: "In writing, covering labour and the part we fitted. If the same fault comes back, so do we, at no charge.",
+        body: "In writing, covering labour and the part I fitted. If the same fault comes back, so do I, at no charge.",
       },
       {
         title: "Always a proper invoice",
@@ -162,22 +168,23 @@ const en: Dict = {
     title: "Four steps, that's it",
     steps: [
       { title: "You call", body: "Describe the symptom and the brand. A lot of faults are identifiable over the phone." },
-      { title: "We give you a window", body: "A day and a two-hour window. We ring when we set off." },
-      { title: "Diagnosis and price", body: "We open the appliance, find the fault and give you a fixed price." },
+      { title: "I give you a window", body: "A day and a two-hour window. I ring when I set off." },
+      { title: "Diagnosis and price", body: "I open the appliance, find the fault and give you a fixed price." },
       { title: "Repair and invoice", body: "With the part on the van, usually on the same visit." },
     ],
   },
 
   areas: {
-    label: "Where we go",
-    title: "Barcelona and the metropolitan area",
-    lead: "We cover the whole city and the towns next to it. If your street isn't on the list, ask anyway.",
-    notListed: "Don't see your area? Call and we'll confirm.",
+    label: "Where I go",
+    title: "Six areas, and I know them",
+    lead:
+      "I work in these six areas. Staying inside them is what lets me get to most jobs the same day. If your street isn't on the list, ask anyway.",
+    notListed: "Don't see your area? Call and I'll confirm.",
   },
 
   faq: {
     label: "Common questions",
-    title: "What people ask us on the phone",
+    title: "What people ask me on the phone",
     items: [
       {
         q: "How soon can you come?",
@@ -185,19 +192,16 @@ const en: Dict = {
       },
       {
         q: "Do you work on my brand?",
-        a: "Yes. We repair all the usual domestic brands: Balay, Bosch, Siemens, Fagor, Zanussi, AEG, Whirlpool, Beko, LG, Samsung, Mitsubishi, Daikin and the rest. We aren't an official service centre for any of them, which means we aren't obliged to charge their rates.",
+        a: "Yes. I repair all the usual domestic brands: Balay, Bosch, Siemens, Fagor, Zanussi, AEG, Whirlpool, Beko, LG, Samsung and the rest. I'm not an official service centre for any of them, which means I'm not obliged to charge their rates.",
       },
       {
         q: "Is it worth repairing, or should I replace it?",
-        a: "We'll tell you straight, against our own interest when that's the honest answer. On an appliance over twelve years old with a failed compressor or motor, it rarely adds up. We'd rather lose the job than have you spend badly.",
+        a: "I'll tell you straight, against my own interest when that's the honest answer. On an appliance over twelve years old with a major failure, it rarely adds up. I'd rather lose the job than have you spend badly.",
       },
-      {
-        q: "Does air conditioning need regassing every year?",
-        a: "No. A sealed circuit doesn't consume refrigerant. If yours loses charge every summer it has a leak, and topping it up without finding that leak means paying again next season.",
-      },
+      { q: boundary.title, a: boundary.body },
       {
         q: "Who pays — me or my landlord?",
-        a: "In a Spanish rental, ordinary wear and tear on appliances that came with the flat is normally the landlord's, and damage from misuse is the tenant's. Send them the invoice and the diagnosis; we write both clearly enough to settle it.",
+        a: "In a Spanish rental, ordinary wear and tear on appliances that came with the flat is normally the landlord's, and damage from misuse is the tenant's. Send them the invoice and the diagnosis; I write both clearly enough to settle it.",
       },
       {
         q: "Do you work weekends?",
@@ -210,30 +214,12 @@ const en: Dict = {
     ],
   },
 
-  aircon: {
-    label: "Speciality",
-    title: "Air conditioning, without the regassing racket",
-    lead:
-      "Every August half of Barcelona rings about the same thing, and a lot of unnecessary regassing gets sold in among those calls. A split that used to cool well and has stopped almost never needs gas — it needs someone to find out where the gas went.",
-    doTitle: "What we do",
-    do: [
-      "Split, multi-split and ducted system repair",
-      "Leak detection with a detector, not guesswork",
-      "R32 and R410A charging, after the leak is sealed",
-      "Coil cleaning and indoor unit disinfection",
-      "Condensate pump and drain replacement",
-      "Installation and commissioning of new units",
-    ],
-    seasonTitle: "Before the heat arrives",
-    seasonBody:
-      "A service in May costs a fraction of a repair in August, and in August there's a waiting list. If it was already cooling weakly last year, don't wait.",
-  },
-
   contact: {
     label: "Contact",
-    title: "Tell us what it's doing",
+    title: "Tell me what it's doing",
     lead: "Calling is fastest. If you'd rather write, the form opens WhatsApp with the message already drafted.",
-    phoneLabel: "Landline",
+    intro:
+      "I'm Freddy. I go to every job myself — I don't send anyone. The person you speak to on the phone is the person who opens up your washing machine.",
     mobileLabel: "Mobile and WhatsApp",
     emailLabel: "Email",
     hoursLabel: "Hours",
@@ -243,11 +229,11 @@ const en: Dict = {
       name: "Your name",
       namePlaceholder: "First and last name",
       appliance: "Appliance",
-      appliancePlaceholder: "Washing machine, fridge, A/C…",
+      appliancePlaceholder: "Washing machine, fridge, oven…",
       brand: "Brand and model",
       brandPlaceholder: "If it's to hand",
       area: "Area or neighbourhood",
-      areaPlaceholder: "Gràcia, Sant Martí…",
+      areaPlaceholder: "Sant Martí, Nou Barris…",
       problem: "What's wrong",
       problemPlaceholder: "In your own words. Noises and error codes help a lot.",
       submit: "Open WhatsApp with this message",
@@ -259,10 +245,10 @@ const en: Dict = {
   },
 
   footer: {
-    blurb: "Callout appliance and air conditioning repair across Barcelona and the metropolitan area.",
+    blurb: "Callout appliance repair across Barcelona: washing machines, fridges, ovens, dryers and dishwashers.",
     services: "Services",
     company: "Company",
-    legalNote: "Independent repair service. We are not an authorised service centre for any manufacturer; brand names belong to their owners.",
+    legalNote: "Independent repair service. I am not an authorised service centre for any manufacturer; brand names belong to their owners.",
     rights: "All rights reserved.",
     googleProfile: "View on Google Maps",
     legal: "Legal notice",
@@ -274,23 +260,21 @@ const en: Dict = {
     privacyTitle: "Privacy policy",
     lastUpdated: "Last updated",
     draftWarning:
-      "Draft pending review. The company identification details are missing and this text has not been checked by a lawyer.",
+      "Draft pending review. The owner's identification details are missing and this text has not been checked by a lawyer.",
   },
 
   meta: {
-    homeTitle: "Appliance and air conditioning repair in Barcelona",
+    homeTitle: "Appliance repair in Barcelona",
     homeDescription:
-      "Callout repairs in Barcelona: washing machines, fridges, ovens, dishwashers and air conditioning. Fixed quotes, {warranty} months' guarantee, proper invoice. Call {phone}.",
+      "Callout repairs in Barcelona: washing machines, fridges, ovens, dryers and dishwashers. Fixed quotes, {warranty} months' guarantee, proper invoice. Call {phone}.",
     servicesTitle: "Appliance repair services",
     servicesDescription:
-      "We repair washing machines, dryers, dishwashers, ovens, hobs, fridges, water heaters and air conditioning at your address in Barcelona.",
-    airconTitle: "Air conditioning repair and installation in Barcelona",
-    airconDescription:
-      "Split, multi-split and ducted: leak detection, R32 and R410A charging, cleaning and commissioning. Callout service across Barcelona.",
-    areasTitle: "Areas of Barcelona we cover",
-    areasDescription: "Callout repair service across every district of Barcelona and the metropolitan area.",
+      "I repair washing machines, dryers, dishwashers, ovens, hobs, fridges and electric water heaters at your address in Barcelona.",
+    areasTitle: "Areas of Barcelona I cover",
+    areasDescription:
+      "Callout appliance repair in Nou Barris, Sant Martí, Sants-Montjuïc, Ciutat Vella, L'Hospitalet de Llobregat and Santa Coloma de Gramenet.",
     contactTitle: "Contact and quotes",
-    contactDescription: "Call {phone} or message on WhatsApp. We'll tell you today whether your appliance is worth fixing.",
+    contactDescription: "Call {phone} or message me on WhatsApp. I'll tell you today whether your appliance is worth fixing.",
   },
 };
 

@@ -15,16 +15,16 @@ const page: PageKey = kind === "notice" ? "legal" : "privacy";
 // An unfilled identification field renders as a visible marker rather than an
 // empty gap. A legal notice with a blank where the NIF should be reads as
 // finished; one that says "pending" does not.
-const pending = locale === "en" ? "[pending]" : locale === "ca" ? "[pendent]" : "[pendiente]";
+const pending = locale === "en" ? "[pending]" : "[pendiente]";
 const vars = {
   legalName: BUSINESS.legalName || pending,
   taxId: BUSINESS.taxId || pending,
   address: BUSINESS.legalAddress || pending,
-  email: BUSINESS.email,
+  email: BUSINESS.email || pending,
   phone: BUSINESS.phone.display,
 };
 
-const isDraft = !BUSINESS.taxId || !BUSINESS.legalAddress || !BUSINESS.legalName;
+const isDraft = !BUSINESS.taxId || !BUSINESS.legalAddress || !BUSINESS.legalName || !BUSINESS.email;
 
 // These pages must not compete with the service pages in search results, and
 // while the identification block is unfilled they should not be indexed at all.

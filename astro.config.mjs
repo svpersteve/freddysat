@@ -14,14 +14,14 @@ export default defineConfig({
   trailingSlash: "always",
   i18n: {
     defaultLocale: "es",
-    locales: ["es", "ca", "en"],
+    locales: ["es", "en"],
     routing: {
-      // Castellano sits at the root; ca and en are prefixed. Changing this
-      // silently moves every Spanish URL, which is the whole indexed site.
+      // Castellano sits at the root; en is prefixed. Changing this silently
+      // moves every Spanish URL, which is the whole indexed site.
       prefixDefaultLocale: false,
     },
   },
-  integrations: [sitemap({ i18n: { defaultLocale: "es", locales: { es: "es-ES", ca: "ca-ES", en: "en-GB" } } })],
+  integrations: [sitemap({ i18n: { defaultLocale: "es", locales: { es: "es-ES", en: "en-GB" } } })],
   vite: { plugins: [tailwindcss()] },
   build: { inlineStylesheets: "auto" },
 });

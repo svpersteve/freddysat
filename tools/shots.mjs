@@ -8,7 +8,6 @@ const BASE = "http://localhost:4322";
 const shots = [
   { name: "es-home-mobile",   url: "/",                        w: 390,  h: 844,  full: true },
   { name: "es-home-desktop",  url: "/",                        w: 1440, h: 900,  full: true },
-  { name: "ca-aircon",        url: "/ca/aire-condicionat/",    w: 1440, h: 900,  full: true },
   { name: "en-contact",       url: "/en/contact/",             w: 1440, h: 900,  full: true },
   { name: "es-servicios",     url: "/servicios/",              w: 1024, h: 900,  full: true },
   { name: "es-legal",         url: "/aviso-legal/",            w: 1024, h: 900,  full: false },
