@@ -1,0 +1,60 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import CallPanel from "../components/CallPanel.astro";
+import Trust from "../components/Trust.astro";
+import AreaList from "../components/AreaList.astro";
+import { fill, t, type Locale } from "../i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const d = t(locale);
+const aircon = d.catalogue.find((s) => s.id === "aire")!;
+---
+
+<Base
+  locale={locale}
+  page="aircon"
+  title={d.meta.airconTitle}
+  description={fill(d.meta.airconDescription)}
+>
+  <PageHeader eyebrow={d.aircon.eyebrow} title={d.aircon.title} lead={d.aircon.lead} />
+
+  <section class="border-b border-steel-soft py-16 md:py-24">
+    <div class="wrap grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+      <div>
+        <h2 class="text-2xl md:text-3xl">{d.aircon.doTitle}</h2>
+        <ul class="mt-6 border-t border-steel-soft">
+          {
+            d.aircon.do.map((item) => (
+              <li class="flex items-start gap-3.5 border-b border-steel-soft py-4">
+                <span class="mt-1.5 size-2 shrink-0 bg-ice" aria-hidden="true" />
+                <span class="text-base leading-relaxed">{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="mt-10 border-l-2 border-ice bg-ice-wash px-6 py-5">
+          <h3 class="font-display text-lg font-bold leading-tight">{d.aircon.seasonTitle}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-graphite-70">{d.aircon.seasonBody}</p>
+        </div>
+      </div>
+
+      <div>
+        <p class="eyebrow">{d.services.common}</p>
+        <ul class="mt-4 grid gap-px bg-steel-soft">
+          {
+            aircon.faults.map((fault) => (
+              <li class="bg-white px-5 py-4 font-display text-base font-bold">{fault}</li>
+            ))
+          }
+        </ul>
+        <CallPanel locale={locale} class="mt-8" />
+      </div>
+    </div>
+  </section>
+
+  <Trust locale={locale} />
+  <AreaList locale={locale} />
+</Base>

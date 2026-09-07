@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/*
+  Freddy SAT — design tokens.
+
+  The palette runs on one axis, because the trade does: everything this business
+  touches is either making something cold (fridge, freezer, A/C) or making it hot
+  (oven, hob, dryer, water heater). Ember and ice are therefore not decoration —
+  they classify the service, and the services page is sorted along them.
+
+  Ember is reserved for the call action and the hot half of the axis. Two embers
+  competing for attention in one viewport is a bug, not a style.
+*/
+@theme {
+  /* Ground: appliance enamel. Cooler and greyer than paper — this is porcelain,
+     not a cream editorial background. */
+  --color-porcelain: #f5f7f7;
+  --color-porcelain-deep: #e8ecec;
+  --color-white: #ffffff;
+
+  /* Ink: appliance trim. Never pure black — reads harsh against enamel. */
+  --color-graphite: #161c22;
+  --color-graphite-70: #4a545e;
+  --color-graphite-45: #78838e;
+
+  /* Cold pole — refrigerant, the cool cycle, A/C. */
+  --color-ice: #0d6e7a;
+  --color-ice-bright: #14939f;
+  --color-ice-wash: #e4f1f2;
+
+  /* Hot pole — the element, the ember. The call-to-action colour. */
+  --color-ember: #d8452a;
+  --color-ember-bright: #f0603c;
+  --color-ember-wash: #fdeae5;
+
+  /* Steel — rules, borders, the edge of a panel. */
+  --color-steel: #c3ccce;
+  --color-steel-soft: #dde3e4;
+
+  /* Status. One green, used only for "we are open right now". */
+  --color-live: #17915f;
+
+  /* Fontsource names the variable cut "… Variable"; the static family name
+     alone silently falls through to the sans-serif fallback. */
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", "Helvetica Neue", sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius-panel: 4px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-porcelain);
+    color: var(--color-graphite);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-feature-settings: "kern", "liga";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  /* Keyboard focus must stay visible everywhere. Ember on porcelain clears
+     WCAG AA against both the light ground and the graphite panels. */
+  :focus-visible {
+    outline: 3px solid var(--color-ember);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-ember);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* The measure. Long-form legal copy needs a narrower one than marketing. */
+  .wrap { width: 100%; max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2rem; } }
+  .wrap-narrow { max-width: 44rem; }
+
+  /* Eyebrow: mono, tracked out, small. Marks a section's *category*, and is only
+     used where the category is genuinely load-bearing. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-graphite-45);
+  }
+}
+
+/* Motion is opt-out, and everything below is a fade or a short translate —
+   nothing here reflows or moves more than 12px. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

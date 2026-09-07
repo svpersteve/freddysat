@@ -1,0 +1,56 @@
+---
+import CallPanel from "./CallPanel.astro";
+import { pathFor, t, type Locale } from "../i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const d = t(locale);
+const contact = pathFor(locale, "contact");
+---
+
+<section class="relative overflow-hidden border-b border-steel-soft bg-porcelain">
+  {/* A single hairline grid, ice at 6% — the faint ruled feel of a service
+      manual. Decorative only, and it stops well before the copy. */}
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.055]"
+    style="background-image:linear-gradient(var(--color-ice) 1px,transparent 1px),linear-gradient(90deg,var(--color-ice) 1px,transparent 1px);background-size:52px 52px"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="wrap relative py-14 md:py-20">
+    {/* Two columns for the pitch and the phone, then the chips run the full
+        width beneath both. Nesting the chips inside the left column instead
+        left the call panel's column empty for most of its height. */}
+    <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-14">
+      <div>
+        <p class="eyebrow">{d.hero.eyebrow}</p>
+        <h1 class="mt-4 text-[clamp(2.5rem,7vw,4.25rem)]">{d.hero.title}</h1>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-graphite-70">{d.hero.lead}</p>
+      </div>
+
+      <CallPanel locale={locale} />
+    </div>
+
+    {/* Symptom-first triage. Nobody rings a SAT thinking "I need a washing
+        machine technician" — they ring thinking "it won't drain". The chips are
+        the site's navigation for that state of mind, and each one carries its
+        symptom through to the contact form. */}
+    <p class="eyebrow mt-12">{d.hero.pickSymptom}</p>
+    <ul class="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+      {
+        d.symptoms.map((s) => (
+          <li>
+            <a
+              href={`${contact}?s=${s.id}`}
+              class="group flex h-full flex-col justify-between gap-1 border border-steel bg-white px-4 py-3 transition-all duration-200 hover:border-ember hover:bg-ember-wash focus-visible:border-ember"
+            >
+              <span class="font-display text-base font-bold leading-tight text-graphite">{s.label}</span>
+              <span class="font-mono text-[0.6875rem] leading-snug text-graphite-45">{s.note}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

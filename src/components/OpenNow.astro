@@ -1,0 +1,77 @@
+---
+import { BUSINESS } from "../config/business";
+import { t, type Locale } from "../i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const d = t(locale);
+const h = BUSINESS.hours;
+---
+
+{/*
+  Open/closed cannot be decided at build time — a prerendered "Open now" is
+  wrong for most of the day it is cached. So the honest, always-true opening
+  hours render server-side, and the script below upgrades them to a live status
+  in the visitor's own reading of Europe/Madrid. No JS, no lie.
+*/}
+<div class="flex items-center gap-2.5 font-mono text-xs" data-open-now>
+  <span class="size-2 rounded-full bg-graphite-45 shrink-0" data-dot aria-hidden="true"></span>
+  <span class="text-white/70" data-status>
+    {d.contact.weekdays} {h.weekdays.open}–{h.weekdays.close}
+  </span>
+</div>
+
+<script
+  is:inline
+  define:vars={{
+    hours: h,
+    labels: {
+      open: d.hero.availableNow,
+      closed: d.hero.closedNow,
+      until: d.hero.todayUntil,
+      opensAt: d.hero.opensAt,
+      weekdays: d.contact.weekdays,
+    },
+  }}
+>
+  (() => {
+    const root = document.querySelector("[data-open-now]");
+    if (!root) return;
+
+    // The business is in Barcelona; the visitor may not be. Formatting "now"
+    // into Europe/Madrid parts means a customer reading this from London is
+    // told whether the *workshop* is open, not whether their own clock says so.
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/Madrid",
+      hour: "2-digit",
+      minute: "2-digit",
+      weekday: "short",
+      hour12: false,
+    }).formatToParts(new Date());
+
+    const get = (type) => parts.find((p) => p.type === type)?.value ?? "";
+    const day = get("weekday");
+    const minutes = Number(get("hour")) * 60 + Number(get("minute"));
+    const toMinutes = (hhmm) => Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3, 5));
+
+    const today = day === "Sat" ? hours.saturday : day === "Sun" ? hours.sunday : hours.weekdays;
+    const isOpen = !!today && minutes >= toMinutes(today.open) && minutes < toMinutes(today.close);
+
+    const dot = root.querySelector("[data-dot]");
+    const status = root.querySelector("[data-status]");
+    if (!dot || !status) return;
+
+    if (isOpen) {
+      dot.style.background = "var(--color-live)";
+      dot.style.boxShadow = "0 0 0 3px color-mix(in srgb, var(--color-live) 25%, transparent)";
+      status.textContent = `${labels.open} · ${labels.until} ${today.close}`;
+      status.className = "text-white";
+    } else {
+      dot.style.background = "var(--color-ember)";
+      status.textContent = today
+        ? `${labels.closed} · ${labels.opensAt} ${today.open}`
+        : `${labels.closed} · ${labels.weekdays} ${hours.weekdays.open}–${hours.weekdays.close}`;
+      status.className = "text-white/70";
+    }
+  })();
+</script>

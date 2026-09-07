@@ -1,0 +1,22 @@
+---
+/**
+ * The wordmark's glyph: one square split on the diagonal, ember against ice.
+ *
+ * It is the palette's hot/cold axis compressed into 24px — the same idea the
+ * services section is sorted along, so the logo states the thesis rather than
+ * decorating it.
+ */
+interface Props { class?: string }
+const { class: className = "size-7" } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="mark-clip"><rect x="0" y="0" width="32" height="32" rx="5" /></clipPath>
+  </defs>
+  <g clip-path="url(#mark-clip)">
+    <rect width="32" height="32" fill="var(--color-ice)" />
+    <path d="M32 0 L32 32 L0 32 Z" fill="var(--color-ember)" />
+    <path d="M32 0 L0 32" stroke="var(--color-porcelain)" stroke-width="2.5" />
+  </g>
+</svg>

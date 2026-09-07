@@ -1,0 +1,89 @@
+---
+import { pathFor, t, type Locale } from "../i18n";
+
+interface Props { locale: Locale; showCta?: boolean }
+const { locale, showCta = true } = Astro.props;
+const d = t(locale);
+const items = d.catalogue;
+
+/**
+ * The axis is computed, not decorated.
+ *
+ * Every service sits at a position between the two poles of the trade — things
+ * that make heat and things that take it away — and its accent colour is that
+ * position, mixed live. Reordering `catalogue` therefore recolours the section
+ * automatically, and no card can drift out of sync with the gradient behind it.
+ */
+const accentAt = (index: number) => {
+  const emberShare = items.length > 1 ? 100 - (index / (items.length - 1)) * 100 : 50;
+  return `color-mix(in oklab, var(--color-ember) ${emberShare.toFixed(1)}%, var(--color-ice))`;
+};
+---
+
+<section id="servicios" class="border-b border-steel-soft py-16 md:py-24">
+  <div class="wrap">
+    <div class="max-w-2xl">
+      <p class="eyebrow">{d.services.eyebrow}</p>
+      <h2 class="mt-3 text-[clamp(1.875rem,4.5vw,3rem)]">{d.services.title}</h2>
+      <p class="mt-4 text-lg leading-relaxed text-graphite-70">{d.services.lead}</p>
+    </div>
+
+    {/* The spine. Labels the poles the cards below are sorted between. */}
+    <div class="mt-12 flex items-center gap-4">
+      <span class="font-mono text-xs font-medium uppercase tracking-[0.16em] text-ember shrink-0">
+        {d.services.hotLabel}
+      </span>
+      <div
+        class="h-1.5 flex-1"
+        style="background:linear-gradient(90deg,var(--color-ember),var(--color-ice))"
+        aria-hidden="true"
+      >
+      </div>
+      <span class="font-mono text-xs font-medium uppercase tracking-[0.16em] text-ice shrink-0">
+        {d.services.coldLabel}
+      </span>
+    </div>
+    <p class="mt-3 font-mono text-[0.6875rem] text-graphite-45">{d.services.axisNote}</p>
+
+    <ul class="mt-6 grid gap-px bg-steel-soft sm:grid-cols-2 lg:grid-cols-4">
+      {
+        items.map((service, i) => (
+          <li class="flex flex-col bg-white p-5 transition-colors duration-200 hover:bg-porcelain">
+            <span class="h-1 w-10 shrink-0" style={`background:${accentAt(i)}`} aria-hidden="true" />
+            <h3 class="mt-4 font-display text-lg font-bold leading-tight">{service.name}</h3>
+            <p class="mt-2.5 flex-1 text-sm leading-relaxed text-graphite-70">{service.blurb}</p>
+
+            <p class="eyebrow mt-5 text-[0.625rem]">{d.services.common}</p>
+            <ul class="mt-2 space-y-1">
+              {service.faults.map((fault) => (
+                <li class="flex gap-2 font-mono text-[0.6875rem] leading-snug text-graphite-45">
+                  <span aria-hidden="true" style={`color:${accentAt(i)}`}>—</span>
+                  <span>{fault}</span>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+
+      {
+        showCta && (
+          <li class="flex flex-col justify-between bg-graphite p-5 text-white">
+            <div>
+              <span class="h-1 w-10 shrink-0 block bg-ice" aria-hidden="true" />
+              <h3 class="mt-4 font-display text-lg font-bold leading-tight">{d.aircon.title}</h3>
+              <p class="mt-2.5 text-sm leading-relaxed text-white/65">{d.aircon.seasonBody}</p>
+            </div>
+            <a
+              href={pathFor(locale, "aircon")}
+              class="mt-5 inline-flex items-center gap-2 font-mono text-xs text-ice-bright transition-colors duration-200 hover:text-white"
+            >
+              {d.services.cta}
+              <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        )
+      }
+    </ul>
+  </div>
+</section>

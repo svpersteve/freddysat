@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "freddysat",
+  // Pinned, not "today". The compatibility date fixes which Workers runtime
+  // behaviours apply; moving it is a deliberate upgrade, not a side effect of
+  // redeploying on a later day.
+  "compatibility_date": "2026-09-07",
+
+  // Static assets only — there is no Worker script, so every request is served
+  // straight from ./dist at the edge. Adding a "main" entry later (a contact
+  // form handler, say) turns this into a Worker with assets in front of it,
+  // without changing the deployment target or the domain.
+  "assets": {
+    "directory": "./dist",
+    // The site builds with trailingSlash: "always"; auto-trailing-slash serves
+    // /servicios/ for a request to /servicios rather than 404ing it.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+
+  "observability": { "enabled": true }
+}

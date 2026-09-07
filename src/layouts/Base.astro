@@ -1,0 +1,122 @@
+---
+// Self-hosted, not Google's CDN. A stylesheet link to fonts.googleapis.com
+// sends every visitor's IP to a third country on first paint, which for an EU
+// site is a data transfer the privacy policy would have to declare. Bundling
+// the woff2 files removes the transfer, the extra DNS lookup and the TLS
+// handshake in one go.
+import "@fontsource-variable/bricolage-grotesque/wght.css";
+import "@fontsource/ibm-plex-sans/latin-400.css";
+import "@fontsource/ibm-plex-sans/latin-500.css";
+import "@fontsource/ibm-plex-sans/latin-600.css";
+import "@fontsource/ibm-plex-mono/latin-400.css";
+import "@fontsource/ibm-plex-mono/latin-500.css";
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CallBar from "../components/CallBar.astro";
+import { BUSINESS, SITE_URL } from "../config/business";
+import { alternatesFor, fill, t, type Locale, type PageKey } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  page: PageKey;
+  title: string;
+  description: string;
+  /** Long-form pages (legal) set this to drop the sticky call bar and narrow the measure. */
+  document?: boolean;
+  /** Overrides the robots directive. Legal pages keep themselves out of the index. */
+  robots?: string;
+}
+
+const { locale, page, title, description, document: isDocument = false, robots = "index, follow" } = Astro.props;
+const d = t(locale);
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+const alternates = alternatesFor(page);
+
+// One LocalBusiness node for the whole site, emitted on every page so any
+// landing page can be the one Google reads. HVACBusiness is the closest
+// schema.org type that covers both halves of the trade.
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "HVACBusiness",
+  "@id": `${SITE_URL}/#business`,
+  name: BUSINESS.name,
+  description: fill(d.footer.blurb),
+  url: SITE_URL,
+  telephone: BUSINESS.phone.tel,
+  email: BUSINESS.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: BUSINESS.address.street,
+    postalCode: BUSINESS.address.postalCode,
+    addressLocality: BUSINESS.address.city,
+    addressRegion: BUSINESS.address.region,
+    addressCountry: BUSINESS.address.country,
+  },
+  geo: { "@type": "GeoCoordinates", latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
+  areaServed: { "@type": "City", name: BUSINESS.address.city },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: BUSINESS.hours.weekdays.open,
+      closes: BUSINESS.hours.weekdays.close,
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Saturday",
+      opens: BUSINESS.hours.saturday.open,
+      closes: BUSINESS.hours.saturday.close,
+    },
+  ],
+  makesOffer: d.catalogue.map((s) => ({
+    "@type": "Offer",
+    itemOffered: { "@type": "Service", name: s.name, description: s.blurb },
+  })),
+};
+---
+
+<!doctype html>
+<html lang={d.htmlLang} dir={d.dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · {BUSINESS.name}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {!robots.includes("noindex") &&
+      alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={new URL(a.href, SITE_URL).href} />)}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={BUSINESS.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={d.htmlLang.replace("-", "_")} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#161c22" />
+    <meta name="robots" content={robots} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
+  </head>
+
+  <body class="min-h-screen flex flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-graphite focus:px-4 focus:py-2 focus:text-white focus:font-mono focus:text-sm"
+      >{d.nav.skip}</a
+    >
+
+    <Header locale={locale} page={page} />
+
+    <main id="main" class={isDocument ? "flex-1 py-14 md:py-20" : "flex-1"}>
+      <slot />
+    </main>
+
+    <Footer locale={locale} />
+    {!isDocument && <CallBar locale={locale} />}
+  </body>
+</html>

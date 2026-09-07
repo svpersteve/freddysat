@@ -1,0 +1,32 @@
+---
+import { LOCALES, DICTS, pathFor, type Locale, type PageKey } from "../i18n";
+
+interface Props { locale: Locale; page: PageKey; class?: string }
+const { locale, page, class: className = "" } = Astro.props;
+---
+
+{/* Links to the *equivalent* page in each language, not to its home page —
+    /servicios/ swaps to /ca/serveis/. Losing your place is the usual bug in a
+    language switcher and the main reason slugs are held in the dictionaries. */}
+<nav class={`flex items-center font-mono text-xs ${className}`} aria-label="Idioma">
+  {
+    LOCALES.map((l, i) => (
+      <>
+        {i > 0 && <span class="text-graphite-45/40 px-0.5" aria-hidden="true">/</span>}
+        <a
+          href={pathFor(l, page)}
+          hreflang={DICTS[l].htmlLang}
+          lang={DICTS[l].htmlLang}
+          aria-current={l === locale ? "true" : undefined}
+          class:list={[
+            "px-1.5 py-1 uppercase tracking-wider transition-colors duration-200",
+            l === locale ? "text-white font-medium" : "text-graphite-45 hover:text-white",
+          ]}
+          title={DICTS[l].localeName}
+        >
+          {l}
+        </a>
+      </>
+    ))
+  }
+</nav>

@@ -1,0 +1,34 @@
+---
+import { BUSINESS } from "../config/business";
+import { t, type Locale } from "../i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const d = t(locale);
+---
+
+{/*
+  Safety guidance before sales. A burning smell and standing water are the two
+  faults where the right first move is not to call anybody — it is to cut the
+  supply — so that instruction goes above the phone number, not below it.
+*/}
+<aside class="border-b border-steel-soft bg-ember-wash">
+  <div class="wrap flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between md:py-7">
+    <div class="flex gap-4">
+      <svg class="mt-0.5 size-6 shrink-0 text-ember" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M12 3 2.5 20h19L12 3Z" stroke-linejoin="round" /><path d="M12 10v4.5" stroke-linecap="round" /><circle cx="12" cy="17.4" r="1.05" fill="currentColor" stroke="none" />
+      </svg>
+      <div>
+        <h2 class="font-display text-base font-bold leading-tight text-graphite">{d.urgent.title}</h2>
+        <p class="mt-1.5 max-w-2xl text-sm leading-relaxed text-graphite-70">{d.urgent.body}</p>
+      </div>
+    </div>
+    <a
+      href={`tel:${BUSINESS.phone.tel}`}
+      class="shrink-0 self-start bg-graphite px-5 py-3 font-mono text-sm text-white transition-colors duration-200 hover:bg-ember sm:self-auto"
+      data-call-link
+    >
+      {d.urgent.cta}
+    </a>
+  </div>
+</aside>

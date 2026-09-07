@@ -1,0 +1,46 @@
+---
+import { BUSINESS } from "../config/business";
+import { t, type Locale } from "../i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const d = t(locale);
+
+const waText = encodeURIComponent(
+  locale === "ca" ? "Hola, tinc una avaria i voldria demanar hora." :
+  locale === "en" ? "Hello, I have a broken appliance and would like to book a visit." :
+  "Hola, tengo una avería y quería pedir cita."
+);
+---
+
+{/*
+  Mobile only. Most of this traffic is someone standing in front of the broken
+  appliance holding a phone, so the call target follows them down the page —
+  but only where the header's own number has been dropped for width.
+*/}
+<div class="fixed inset-x-0 bottom-0 z-40 flex border-t border-graphite/15 bg-white/95 backdrop-blur md:hidden print:hidden">
+  <a
+    href={`tel:${BUSINESS.phone.tel}`}
+    class="flex flex-[1.6] items-center justify-center gap-2.5 bg-ember px-4 py-4 font-mono text-base font-medium text-white"
+    data-call-link
+  >
+    <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+      <path d="M4 3h3.5l1.8 4.5-2.2 1.6a12 12 0 0 0 5.8 5.8l1.6-2.2L19 14.5V18a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 2 5.2 2 2 0 0 1 4 3Z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    {d.nav.call}
+  </a>
+  <a
+    href={`https://wa.me/${BUSINESS.whatsapp}?text=${waText}`}
+    target="_blank"
+    rel="noopener"
+    class="flex flex-1 items-center justify-center gap-2 px-4 py-4 text-sm text-graphite"
+    aria-label={d.hero.whatsapp}
+  >
+    <svg class="size-5 text-live" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.86 9.86 0 0 0 4.74 1.2h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.23-8.23a8.2 8.2 0 0 1 8.22 8.24c0 4.54-3.69 8.22-8.22 8.22Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/>
+    </svg>
+    WhatsApp
+  </a>
+</div>
+{/* Clears the fixed bar so the footer's last line is never sitting under it. */}
+<div class="h-[60px] md:hidden print:hidden" aria-hidden="true"></div>

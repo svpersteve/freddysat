@@ -1,0 +1,66 @@
+---
+import Base from "../layouts/Base.astro";
+import { BUSINESS } from "../config/business";
+import { LEGAL, LEGAL_UPDATED } from "../i18n/legal";
+import { fill, t, type Locale, type PageKey } from "../i18n";
+
+interface Props { locale: Locale; kind: "notice" | "privacy" }
+const { locale, kind } = Astro.props;
+const d = t(locale);
+const doc = LEGAL[locale][kind];
+
+const title = kind === "notice" ? d.legal.noticeTitle : d.legal.privacyTitle;
+const page: PageKey = kind === "notice" ? "legal" : "privacy";
+
+const address = [BUSINESS.address.street, BUSINESS.address.postalCode, BUSINESS.address.city]
+  .filter(Boolean)
+  .join(", ");
+
+// An unfilled identification field renders as a visible marker rather than an
+// empty gap. A legal notice with a blank where the NIF should be reads as
+// finished; one that says "pending" does not.
+const pending = locale === "en" ? "[pending]" : locale === "ca" ? "[pendent]" : "[pendiente]";
+const vars = {
+  legalName: BUSINESS.legalName || pending,
+  taxId: BUSINESS.taxId || pending,
+  address: address || pending,
+  email: BUSINESS.email,
+  phone: BUSINESS.phone.display,
+};
+
+const isDraft = !BUSINESS.taxId;
+
+// These pages must not compete with the service pages in search results, and
+// while the identification block is unfilled they should not be indexed at all.
+const robots = isDraft ? "noindex, nofollow" : "noindex, follow";
+---
+
+<Base locale={locale} page={page} title={title} description={doc.intro} robots={robots} document>
+  <div class="wrap wrap-narrow">
+    <p class="eyebrow">{BUSINESS.name}</p>
+    <h1 class="mt-3 text-[clamp(2rem,5vw,3rem)]">{title}</h1>
+    <p class="mt-4 text-lg leading-relaxed text-graphite-70">{doc.intro}</p>
+    <p class="mt-3 font-mono text-xs text-graphite-45">{d.legal.lastUpdated}: {LEGAL_UPDATED}</p>
+
+    {
+      isDraft && (
+        <p class="mt-8 border-l-2 border-ember bg-ember-wash px-5 py-4 text-sm leading-relaxed text-graphite">
+          {d.legal.draftWarning}
+        </p>
+      )
+    }
+
+    <div class="mt-12 space-y-10">
+      {
+        doc.sections.map((section) => (
+          <section>
+            <h2 class="font-display text-xl font-bold leading-tight">{section.h}</h2>
+            {section.p.map((paragraph) => (
+              <p class="mt-3 text-[0.9375rem] leading-relaxed text-graphite-70">{fill(paragraph, vars)}</p>
+            ))}
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</Base>

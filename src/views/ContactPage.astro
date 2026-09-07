@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import ContactForm from "../components/ContactForm.astro";
+import CallPanel from "../components/CallPanel.astro";
+import { AREAS, BUSINESS } from "../config/business";
+import { fill, t, type Locale } from "../i18n";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const d = t(locale);
+
+const rows = [
+  { label: d.contact.phoneLabel, value: BUSINESS.phone.display, href: `tel:${BUSINESS.phone.tel}` },
+  { label: d.contact.mobileLabel, value: BUSINESS.mobile.display, href: `tel:${BUSINESS.mobile.tel}` },
+  { label: d.contact.emailLabel, value: BUSINESS.email, href: `mailto:${BUSINESS.email}` },
+];
+---
+
+<Base
+  locale={locale}
+  page="contact"
+  title={d.meta.contactTitle}
+  description={fill(d.meta.contactDescription)}
+>
+  <PageHeader eyebrow={d.contact.eyebrow} title={d.contact.title} lead={d.contact.lead} />
+
+  <section class="py-14 md:py-20">
+    <div class="wrap grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
+      <div>
+        <CallPanel locale={locale} />
+
+        <dl class="mt-8 border-t border-steel-soft">
+          {
+            rows.map((row) => (
+              <div class="flex items-baseline justify-between gap-4 border-b border-steel-soft py-4">
+                <dt class="eyebrow">{row.label}</dt>
+                <dd>
+                  <a
+                    href={row.href}
+                    class="font-mono text-base text-graphite transition-colors duration-200 hover:text-ember"
+                    data-call-link={row.href.startsWith("tel:") ? true : undefined}
+                  >
+                    {row.value}
+                  </a>
+                </dd>
+              </div>
+            ))
+          }
+          <div class="flex items-baseline justify-between gap-4 border-b border-steel-soft py-4">
+            <dt class="eyebrow">{d.contact.hoursLabel}</dt>
+            <dd class="text-right font-mono text-sm">
+              <span class="block">{d.contact.weekdays} {BUSINESS.hours.weekdays.open}–{BUSINESS.hours.weekdays.close}</span>
+              <span class="block text-graphite-45">{d.contact.saturday} {BUSINESS.hours.saturday.open}–{BUSINESS.hours.saturday.close}</span>
+            </dd>
+          </div>
+          <div class="border-b border-steel-soft py-4">
+            <dt class="eyebrow">{d.contact.areaLabel}</dt>
+            <dd class="mt-2 text-sm leading-relaxed text-graphite-70">{AREAS.join(" · ")}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <ContactForm locale={locale} />
+    </div>
+  </section>
+</Base>
